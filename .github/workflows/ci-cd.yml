@@ -1,20 +1,33 @@
-steps:
-  - name: 📥 Клонирование репозитория
-    uses: actions/checkout@v4
+name: CI/CD для ClientService
 
-  - name: 🐳 Установка Docker Compose
-    run: |
-      sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-      sudo chmod +x /usr/local/bin/docker-compose
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
 
-  - name: 🛠 Сборка и запуск контейнеров
-    working-directory: ${{ github.workspace }}
-    run: docker-compose -f docker-compose-5050.yml up -d --build
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🧬 Клонирование репозитория
+        uses: actions/checkout@v4
 
-  - name: 🔍 Проверка запущенных контейнеров
-    working-directory: ${{ github.workspace }}
-    run: docker-compose -f docker-compose-5050.yml ps
+      - name: 🐳 Установка Docker Compose
+        run: |
+          sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+          sudo chmod +x /usr/local/bin/docker-compose
 
-  - name: 🛑 Остановка и удаление контейнеров
-    working-directory: ${{ github.workspace }}
-    run: docker-compose -f docker-compose-5050.yml down
+      - name: 🛠️ Сборка и запуск контейнеров
+        working-directory: ${{ github.workspace }}
+        run: docker-compose -f docker-compose-5050.yml up -d --build
+
+      - name: 🔍 Проверка запущенных контейнеров
+        working-directory: ${{ github.workspace }}
+        run: docker-compose -f docker-compose-5050.yml ps
+
+      - name: 🔴 Остановка и удаление контейнеров
+        working-directory: ${{ github.workspace }}
+        run: docker-compose -f docker-compose-5050.yml down
