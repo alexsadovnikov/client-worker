@@ -12,7 +12,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: 🧬 Клонирование репозитория
+      - name: 🛎️ Клонирование репозитория
         uses: actions/checkout@v4
 
       - name: 🐳 Установка Docker Compose
@@ -20,7 +20,7 @@ jobs:
           sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
           sudo chmod +x /usr/local/bin/docker-compose
 
-      - name: 🛠️ Сборка и запуск контейнеров
+      - name: 🛠 Сборка и запуск контейнеров
         working-directory: ${{ github.workspace }}
         run: docker-compose -f docker-compose-5050.yml up -d --build
 
