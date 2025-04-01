@@ -7,7 +7,7 @@ from kafka import KafkaConsumer
 import threading
 app = Flask(__name__)
 from flasgger import Swagger
-swagger = Swagger(app)
+swagger = Swagger(app, template_file="worker/openapi.yaml")
 
 # ===============================
 # 🔌 Подключение к Kafka с ожиданием
