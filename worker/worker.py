@@ -3,7 +3,8 @@ from kafka import KafkaProducer
 import requests
 import json
 import time
-
+from kafka import KafkaConsumer
+import threading
 app = Flask(__name__)
 
 # ===============================
@@ -29,6 +30,7 @@ while True:
 def send_message():
     data = request.json
     producer.send('client-topic', data)
+    producer.flush()
     print(f"📨 Отправлено в Kafka: {data}")
     return jsonify({'status': 'ok'}), 200
 
@@ -60,5 +62,32 @@ def get_case_metadata():
 # ===============================
 # 🚀 Запуск Flask-сервиса
 # ===============================
+def consume_from_kafka():
+    while True:
+        try:
+            consumer = KafkaConsumer(
+                'client-topic',
+                bootstrap_servers='kafka:9092',
+                group_id='client-consumer-group',
+                value_deserializer=lambda m: json.loads(m.decode('utf-8')),
+                auto_offset_reset='earliest',
+                enable_auto_commit=True
+            )
+            print("✅ Kafka consumer подключён")
+            break
+        except Exception as e:
+            print(f"⏳ Ожидаем Kafka (consumer)...: {e}")
+            time.sleep(3)
+
+    for msg in consumer:
+        event = msg.value
+        print(f"📥 Получено из Kafka: {event}")
+
+        try:
+            resp = requests.post(f"{BASE_URL}/entity", json=event, headers=HEADERS)
+            print(f"📬 Отправлено в CRM → {resp.status_code}: {resp.text}")
+        except Exception as e:
+            print(f"❌ Ошибка при отправке в CRM: {e}")
 if __name__ == '__main__':
+    threading.Thread(target=consume_from_kafka, daemon=True).start()
     app.run(host='0.0.0.0', port=5050)
