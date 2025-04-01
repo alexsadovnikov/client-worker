@@ -6,6 +6,8 @@ import time
 from kafka import KafkaConsumer
 import threading
 app = Flask(__name__)
+from flasgger import Swagger
+swagger = Swagger(app)
 
 # ===============================
 # 🔌 Подключение к Kafka с ожиданием
