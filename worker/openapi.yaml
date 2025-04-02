@@ -1,0 +1,34 @@
+swagger = Swagger(app, config={
+    "swagger": "2.0",
+    "info": {
+        "description": "API description",
+        "version": "1.0.0",
+        "title": "API"
+    },
+    "host": "localhost:5000",
+    "schemes": ["http"],
+    "template_file": "./worker/openapi.yaml"  # Путь относительно рабочего каталога
+}
+paths:
+  /send-event:
+    post:
+      summary: "Send event to Kafka"
+      parameters:
+        - name: "data"
+          in: "body"
+          description: "Event data"
+          required: true
+          schema:
+            type: "object"
+            properties:
+              event:
+                type: "string"
+              data:
+                type: "string"
+      responses:
+        200:
+          description: "Event successfully sent"
+        400:
+          description: "Invalid input"
+        500:
+          description: "Internal server error"

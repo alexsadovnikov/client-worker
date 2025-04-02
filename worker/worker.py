@@ -7,7 +7,20 @@ from kafka import KafkaConsumer
 import threading
 app = Flask(__name__)
 from flasgger import Swagger
-swagger = Swagger(app, template_file="worker/openapi.yaml")
+swagger = Swagger(app, config={
+    "headers": [],
+    "specs": [
+        {
+            "endpoint": 'apispec_1',
+            "route": '/apispec_1.json',
+            "rule_filter": lambda rule: True,
+            "model_filter": lambda tag: True,
+        }
+    ],
+    "static_url_path": "/flasgger_static",
+    "swagger_ui": True,
+    "specs_route": "/apidocs/"
+}, template_file="worker/openapi.yaml")
 
 # ===============================
 # 🔌 Подключение к Kafka с ожиданием

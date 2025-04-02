@@ -7,4 +7,3 @@ COPY crm_mock.py .
 RUN pip install flask
 
 CMD ["python", "crm_mock.py"]
-

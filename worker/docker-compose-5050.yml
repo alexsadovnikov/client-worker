@@ -1,4 +1,4 @@
-version: "3.8"
+version: '3.8'
 
 services:
   kafka:
@@ -23,21 +23,13 @@ services:
       retries: 10
 
   crm:
-    build: ./crm
+    build: ../CRM
     ports:
       - "5050:5000"
 
-  producer:
-    build: ./producer
-    depends_on:
-      kafka:
-        condition: service_healthy
-    restart: on-failure
-
   worker:
-    build: ./worker
+    build: ../worker  # Путь на один уровень выш
     ports:
       - "5051:5000"
     depends_on:
       - kafka
-      - crm
