@@ -3,6 +3,7 @@ version: '3.8'
 services:
   kafka:
     image: bitnami/kafka:latest
+    container_name: kafka
     ports:
       - "9092:9092"
     environment:
@@ -23,13 +24,18 @@ services:
       retries: 10
 
   crm:
-    build: ../CRM
+    build:
+      context: ../crm
+    container_name: crm
     ports:
-      - "5050:5000"
+      - "5050:5050"
 
   worker:
-    build: ../worker  # Путь на один уровень выш
+    build:
+      context: .
+    container_name: worker
     ports:
-      - "5051:5000"
+      - "5000:5000"
     depends_on:
       - kafka
+      - crm
