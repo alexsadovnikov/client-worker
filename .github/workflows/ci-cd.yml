@@ -22,12 +22,12 @@ jobs:
 
       - name: 🛠 Сборка и запуск контейнеров
         working-directory: ${{ github.workspace }}
-        run: docker-compose -f docker-compose-5050.yml up -d --build
+        run: docker-compose -f docker-compose.yml up -d --build
 
       - name: 🔍 Проверка запущенных контейнеров
         working-directory: ${{ github.workspace }}
-        run: docker-compose -f docker-compose-5050.yml ps
+        run: docker-compose -f docker-compose.yml ps
 
       - name: 🔴 Остановка и удаление контейнеров
         working-directory: ${{ github.workspace }}
-        run: docker-compose -f docker-compose-5050.yml down
+        run: docker-compose -f docker-compose.yml down
