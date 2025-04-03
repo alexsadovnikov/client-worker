@@ -21,10 +21,13 @@ jobs:
           sudo chmod +x /usr/local/bin/docker-compose
 
       - name: 🛠 Сборка и запуск контейнеров
-        run: docker-compose -f worker/docker-compose.yml up -d --build
+        run: |
+          docker-compose -f worker/docker-compose.yml up -d --build
 
       - name: 🔍 Проверка запущенных контейнеров
-        run: docker-compose -f worker/docker-compose.yml ps
+        run: |
+          docker-compose -f worker/docker-compose.yml ps
 
       - name: 🔴 Остановка и удаление контейнеров
-        run: docker-compose -f worker/docker-compose.yml down
+        run: |
+          docker-compose -f worker/docker-compose.yml down
