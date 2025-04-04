@@ -1,14 +1,11 @@
-swagger = Swagger(app, config={
-    "swagger": "2.0",
-    "info": {
-        "description": "API description",
-        "version": "1.0.0",
-        "title": "API"
-    },
-    "host": "localhost:5000",
-    "schemes": ["http"],
-    "template_file": "./worker/openapi.yaml"  # Путь относительно рабочего каталога
-}
+swagger: "2.0"
+info:
+  description: "API description"
+  version: "1.0.0"
+  title: "API"
+host: "localhost:5000"
+schemes:
+  - http
 paths:
   /send-event:
     post:
