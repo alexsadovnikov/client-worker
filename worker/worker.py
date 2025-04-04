@@ -1,21 +1,15 @@
-from flask import Flask, request, jsonify
-from kafka import KafkaProducer, KafkaConsumer
-import requests
+import os
 import json
 import time
 import threading
+import requests
+from flask import Flask, request, jsonify
+from kafka import KafkaProducer, KafkaConsumer
 from flasgger import Swagger
-import os
 
 app = Flask(__name__)
 
-# --- Swagger config ---
-BASE_URL = "http://crm:5000"
-HEADERS = {
-    "Auth": "mock-token",
-    "GroupingId": "test-group"
-}
-
+# 📘 Swagger и путь к схеме
 template_file_path = os.path.join(os.path.dirname(__file__), "openapi.yaml")
 
 swagger = Swagger(app, config={
@@ -33,10 +27,17 @@ swagger = Swagger(app, config={
     "specs_route": "/apidocs/"
 }, template_file=template_file_path)
 
-# --- Kafka producer (будет подключаться при запуске)
+# 📡 Константы CRM
+BASE_URL = "http://crm:5000"
+HEADERS = {
+    "Auth": "mock-token",
+    "GroupingId": "test-group"
+}
+
+# 📨 Kafka producer (будет подключаться при запуске)
 producer = None
 
-# --- Kafka consumer loop
+# 📥 Kafka consumer (работает в фоне)
 def consume_from_kafka():
     while True:
         try:
@@ -63,12 +64,7 @@ def consume_from_kafka():
         except Exception as e:
             print(f"❌ Ошибка при отправке в CRM: {e}")
 
-# --- Роуты
-
-@app.route("/")
-def index():
-    return jsonify({"message": "Worker API is running"}), 200
-
+# --- Существующие роуты
 @app.route('/send', methods=['POST'])
 def send_message():
     data = request.json
@@ -92,9 +88,38 @@ def get_case_metadata():
     resp = requests.get(f"{BASE_URL}/metadata/entity/Case", headers=HEADERS)
     return jsonify(resp.json()), resp.status_code
 
-# --- Только при запуске файла вручную:
+# --- 🔥 Новые CRM-роуты:
+
+@app.route("/crm/cases", methods=["GET"])
+def get_cases():
+    resp = requests.get(f"{BASE_URL}/entity/Case", headers=HEADERS)
+    return jsonify(resp.json()), resp.status_code
+
+@app.route("/crm/contacts/search", methods=["POST"])
+def search_contacts():
+    filter_payload = request.json
+    resp = requests.post(f"{BASE_URL}/entity/search/ContactCc", json=filter_payload, headers=HEADERS)
+    return jsonify(resp.json()), resp.status_code
+
+@app.route("/crm/contact/<contact_id>/cases", methods=["GET"])
+def get_contact_cases(contact_id):
+    resp = requests.get(f"{BASE_URL}/relationship/ContactCc/{contact_id}/Case", headers=HEADERS)
+    return jsonify(resp.json()), resp.status_code
+
+@app.route("/crm/entity/<entity>", methods=["POST"])
+def create_entity(entity):
+    data = request.json
+    resp = requests.post(f"{BASE_URL}/entity/{entity}", json=data, headers=HEADERS)
+    return jsonify(resp.json()), resp.status_code
+
+@app.route("/crm/entity/<entity>/<entity_id>", methods=["PUT"])
+def update_entity(entity, entity_id):
+    data = request.json
+    resp = requests.put(f"{BASE_URL}/entity/{entity}/{entity_id}", json=data, headers=HEADERS)
+    return jsonify(resp.json()), resp.status_code
+
+# --- 🚀 Запуск
 if __name__ == '__main__':
-    # подключение к Kafka producer
     while True:
         try:
             producer = KafkaProducer(
@@ -107,8 +132,5 @@ if __name__ == '__main__':
             print("⏳ Ожидаем Kafka...")
             time.sleep(3)
 
-    # запуск consumer в фоне
     threading.Thread(target=consume_from_kafka, daemon=True).start()
-
-    # запуск Flask
     app.run(host='0.0.0.0', port=5050)
