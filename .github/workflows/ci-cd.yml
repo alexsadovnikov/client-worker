@@ -15,19 +15,14 @@ jobs:
       - name: 🛎️ Клонирование репозитория
         uses: actions/checkout@v4
 
-      - name: 🐳 Установка Docker Compose
-        run: |
-          sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-          sudo chmod +x /usr/local/bin/docker-compose
-
       - name: 🛠 Сборка и запуск контейнеров
         run: |
-          docker-compose -f worker/docker-compose.yml up -d --build
+          docker compose -f docker-compose.yml up -d --build
 
       - name: 🔍 Проверка запущенных контейнеров
         run: |
-          docker-compose -f worker/docker-compose.yml ps
+          docker compose -f docker-compose.yml ps
 
       - name: 🔴 Остановка и удаление контейнеров
         run: |
-          docker-compose -f worker/docker-compose.yml down
+          docker compose -f docker-compose.yml down

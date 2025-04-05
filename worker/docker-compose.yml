@@ -21,14 +21,16 @@ services:
       timeout: 5s
       retries: 10
 
-
   crm:
     build:
       context: ./crm
     container_name: crm
+    working_dir: /app
+    command: python crm_mock.py
+    volumes:
+      - ./crm:/app
     ports:
       - "5150:5000"
-
 
   worker:
     build:

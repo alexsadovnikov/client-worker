@@ -24,14 +24,14 @@ services:
       retries: 10
 
   crm:
-    image: python:3.11
+    build:
+      context: ./crm
     container_name: crm
-    volumes:
-      - ./app:/app
+    ports:
+      - "5150:5000"
     working_dir: /app
     command: python crm_mock.py
-    ports:
-      - "5050:5000"
+
 
   worker:
     build:
