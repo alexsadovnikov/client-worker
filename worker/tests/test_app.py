@@ -74,3 +74,9 @@ def test_update_entity(mock_put):
     response = client.put("/crm/entity/ContactCc/456", json={"name": "Updated"})
     assert response.status_code == 200
     assert response.json == {"updated": True}
+    from worker.worker import app
+
+def test_index_route_returns_200():
+    client = app.test_client()
+    response = client.get("/")
+    assert response.status_code == 200

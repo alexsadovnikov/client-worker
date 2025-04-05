@@ -1,31 +1,124 @@
 swagger: "2.0"
 info:
-  description: "API description"
+  description: API для взаимодействия с Kafka и mock CRM
   version: "1.0.0"
-  title: "API"
-host: "localhost:5000"
+  title: Client Worker API
+
+host: localhost:5050
+basePath: /
 schemes:
   - http
+
 paths:
-  /send-event:
+  /send:
     post:
-      summary: "Send event to Kafka"
+      summary: Отправить сообщение в Kafka
+      consumes:
+        - application/json
       parameters:
-        - name: "data"
-          in: "body"
-          description: "Event data"
+        - in: body
+          name: body
           required: true
           schema:
-            type: "object"
+            type: object
             properties:
               event:
-                type: "string"
+                type: string
               data:
-                type: "string"
+                type: string
       responses:
         200:
-          description: "Event successfully sent"
+          description: Успешно отправлено
         400:
-          description: "Invalid input"
-        500:
-          description: "Internal server error"
+          description: Ошибка валидации
+
+  /crm/contacts:
+    get:
+      summary: Получить список контактов
+      responses:
+        200:
+          description: Список контактов
+
+  /crm/contact:
+    post:
+      summary: Создать контакт
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: contact
+          required: true
+          schema:
+            type: object
+      responses:
+        200:
+          description: Контакт создан
+
+  /crm/metadata/case:
+    get:
+      summary: Получить метаданные для сущности Case
+      responses:
+        200:
+          description: Метаданные
+
+  /crm/cases:
+    get:
+      summary: Получить список кейсов
+      responses:
+        200:
+          description: Список кейсов
+
+  /crm/entity:
+    post:
+      summary: Создать сущность в CRM
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: entity
+          required: true
+          schema:
+            type: object
+      responses:
+        200:
+          description: Сущность создана
+
+  /crm/entity/{entity_name}/{id}:
+    put:
+      summary: Обновить сущность в CRM
+      consumes:
+        - application/json
+      parameters:
+        - name: entity_name
+          in: path
+          required: true
+          type: string
+        - name: id
+          in: path
+          required: true
+          type: string
+        - in: body
+          name: data
+          required: true
+          schema:
+            type: object
+      responses:
+        200:
+          description: Сущность обновлена
+
+  /crm/search:
+    post:
+      summary: Выполнить поиск сущностей в CRM
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: query
+          required: true
+          schema:
+            type: object
+      responses:
+        200:
+          description: Результаты поиска
+
+definitions: {}

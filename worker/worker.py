@@ -134,3 +134,6 @@ if __name__ == '__main__':
 
     threading.Thread(target=consume_from_kafka, daemon=True).start()
     app.run(host='0.0.0.0', port=5050)
+@app.route("/", methods=["GET"])
+def index():
+    return jsonify({"message": "Service is running"}), 200
