@@ -1,9 +1,13 @@
-FROM python:3.11-slim
+FROM python:3.11
 
+# Устанавливаем рабочую директорию внутри контейнера
 WORKDIR /app
 
-COPY crm_mock.py .
+# Копируем все файлы из папки crm в рабочую директорию
+COPY . .
 
-RUN pip install flask
+# Устанавливаем зависимости (только Flask)
+RUN pip install --no-cache-dir flask
 
+# Указываем команду запуска
 CMD ["python", "crm_mock.py"]

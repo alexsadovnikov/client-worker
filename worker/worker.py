@@ -64,10 +64,17 @@ def consume_from_kafka():
         except Exception as e:
             print(f"❌ Ошибка при отправке в CRM: {e}")
 
-# --- Существующие роуты
+# --- Роуты API
+
+@app.route("/", methods=["GET"])
+def index():
+    return jsonify({"message": "Service is running"}), 200
+
 @app.route('/send', methods=['POST'])
 def send_message():
     data = request.json
+    if not producer:
+        return jsonify({'error': 'Kafka producer not initialized'}), 500
     producer.send('client-topic', data)
     producer.flush()
     return jsonify({'status': 'ok'}), 200
@@ -87,8 +94,6 @@ def create_contact():
 def get_case_metadata():
     resp = requests.get(f"{BASE_URL}/metadata/entity/Case", headers=HEADERS)
     return jsonify(resp.json()), resp.status_code
-
-# --- 🔥 Новые CRM-роуты:
 
 @app.route("/crm/cases", methods=["GET"])
 def get_cases():
@@ -134,6 +139,3 @@ if __name__ == '__main__':
 
     threading.Thread(target=consume_from_kafka, daemon=True).start()
     app.run(host='0.0.0.0', port=5050)
-@app.route("/", methods=["GET"])
-def index():
-    return jsonify({"message": "Service is running"}), 200
