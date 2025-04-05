@@ -1,18 +1,20 @@
 {
     "info": {
-        "description": "API description",
+        "description": "API \u0434\u043b\u044f \u0432\u0437\u0430\u0438\u043c\u043e\u0434\u0435\u0439\u0441\u0442\u0432\u0438\u044f \u0441 Kafka \u0438 mock CRM",
         "version": "1.0.0",
-        "title": "API"
+        "title": "Client Worker API"
     },
     "paths": {
-        "/send-event": {
+        "/send": {
             "post": {
-                "summary": "Send event to Kafka",
+                "summary": "\u041e\u0442\u043f\u0440\u0430\u0432\u0438\u0442\u044c \u0441\u043e\u043e\u0431\u0449\u0435\u043d\u0438\u0435 \u0432 Kafka",
+                "consumes": [
+                    "application/json"
+                ],
                 "parameters": [
                     {
-                        "name": "data",
                         "in": "body",
-                        "description": "Event data",
+                        "name": "body",
                         "required": true,
                         "schema": {
                             "type": "object",
@@ -29,13 +31,144 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Event successfully sent"
+                        "description": "\u0423\u0441\u043f\u0435\u0448\u043d\u043e \u043e\u0442\u043f\u0440\u0430\u0432\u043b\u0435\u043d\u043e"
                     },
                     "400": {
-                        "description": "Invalid input"
+                        "description": "\u041e\u0448\u0438\u0431\u043a\u0430 \u0432\u0430\u043b\u0438\u0434\u0430\u0446\u0438\u0438"
+                    }
+                }
+            }
+        },
+        "/crm/contacts": {
+            "get": {
+                "summary": "\u041f\u043e\u043b\u0443\u0447\u0438\u0442\u044c \u0441\u043f\u0438\u0441\u043e\u043a \u043a\u043e\u043d\u0442\u0430\u043a\u0442\u043e\u0432",
+                "responses": {
+                    "200": {
+                        "description": "\u0421\u043f\u0438\u0441\u043e\u043a \u043a\u043e\u043d\u0442\u0430\u043a\u0442\u043e\u0432"
+                    }
+                }
+            }
+        },
+        "/crm/contact": {
+            "post": {
+                "summary": "\u0421\u043e\u0437\u0434\u0430\u0442\u044c \u043a\u043e\u043d\u0442\u0430\u043a\u0442",
+                "consumes": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "contact",
+                        "required": true,
+                        "schema": {
+                            "type": "object"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "\u041a\u043e\u043d\u0442\u0430\u043a\u0442 \u0441\u043e\u0437\u0434\u0430\u043d"
+                    }
+                }
+            }
+        },
+        "/crm/metadata/case": {
+            "get": {
+                "summary": "\u041f\u043e\u043b\u0443\u0447\u0438\u0442\u044c \u043c\u0435\u0442\u0430\u0434\u0430\u043d\u043d\u044b\u0435 \u0434\u043b\u044f \u0441\u0443\u0449\u043d\u043e\u0441\u0442\u0438 Case",
+                "responses": {
+                    "200": {
+                        "description": "\u041c\u0435\u0442\u0430\u0434\u0430\u043d\u043d\u044b\u0435"
+                    }
+                }
+            }
+        },
+        "/crm/cases": {
+            "get": {
+                "summary": "\u041f\u043e\u043b\u0443\u0447\u0438\u0442\u044c \u0441\u043f\u0438\u0441\u043e\u043a \u043a\u0435\u0439\u0441\u043e\u0432",
+                "responses": {
+                    "200": {
+                        "description": "\u0421\u043f\u0438\u0441\u043e\u043a \u043a\u0435\u0439\u0441\u043e\u0432"
+                    }
+                }
+            }
+        },
+        "/crm/entity": {
+            "post": {
+                "summary": "\u0421\u043e\u0437\u0434\u0430\u0442\u044c \u0441\u0443\u0449\u043d\u043e\u0441\u0442\u044c \u0432 CRM",
+                "consumes": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "entity",
+                        "required": true,
+                        "schema": {
+                            "type": "object"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "\u0421\u0443\u0449\u043d\u043e\u0441\u0442\u044c \u0441\u043e\u0437\u0434\u0430\u043d\u0430"
+                    }
+                }
+            }
+        },
+        "/crm/entity/{entity_name}/{id}": {
+            "put": {
+                "summary": "\u041e\u0431\u043d\u043e\u0432\u0438\u0442\u044c \u0441\u0443\u0449\u043d\u043e\u0441\u0442\u044c \u0432 CRM",
+                "consumes": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "entity_name",
+                        "in": "path",
+                        "required": true,
+                        "type": "string"
                     },
-                    "500": {
-                        "description": "Internal server error"
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "body",
+                        "name": "data",
+                        "required": true,
+                        "schema": {
+                            "type": "object"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "\u0421\u0443\u0449\u043d\u043e\u0441\u0442\u044c \u043e\u0431\u043d\u043e\u0432\u043b\u0435\u043d\u0430"
+                    }
+                }
+            }
+        },
+        "/crm/search": {
+            "post": {
+                "summary": "\u0412\u044b\u043f\u043e\u043b\u043d\u0438\u0442\u044c \u043f\u043e\u0438\u0441\u043a \u0441\u0443\u0449\u043d\u043e\u0441\u0442\u0435\u0439 \u0432 CRM",
+                "consumes": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "object"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "\u0420\u0435\u0437\u0443\u043b\u044c\u0442\u0430\u0442\u044b \u043f\u043e\u0438\u0441\u043a\u0430"
                     }
                 }
             }
@@ -43,7 +176,8 @@
     },
     "definitions": {},
     "swagger": "2.0",
-    "host": "localhost:5000",
+    "host": "localhost:5050",
+    "basePath": "/",
     "schemes": [
         "http"
     ]
