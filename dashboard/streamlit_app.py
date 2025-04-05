@@ -1,15 +1,3 @@
-from pathlib import Path
-import pandas as pd
-import ace_tools as tools
-
-# Создадим requirements-dashboard.txt
-requirements_path = Path("dashboard/requirements-dashboard.txt")
-requirements_path.parent.mkdir(parents=True, exist_ok=True)
-requirements_path.write_text("streamlit\npandas\nrequests")
-
-# Создадим базовую структуру Streamlit-приложения
-streamlit_app_path = Path("dashboard/streamlit_app.py")
-streamlit_app_path.write_text("""\
 import streamlit as st
 import pandas as pd
 import requests
@@ -40,9 +28,3 @@ if st.button("Получить контакты"):
             st.warning(f"⚠️ Ошибка: {response.status_code}")
     except Exception as e:
         st.error(f"❌ Ошибка при запросе: {e}")
-""")
-
-tools.display_dataframe_to_user(name="✅ Готово для запуска", dataframe=pd.DataFrame({
-    "Файл": ["dashboard/requirements-dashboard.txt", "dashboard/streamlit_app.py"],
-    "Описание": ["Зависимости для Streamlit", "Приложение Streamlit для Dashboard"]
-}))
