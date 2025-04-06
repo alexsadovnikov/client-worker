@@ -14,7 +14,6 @@ from pydantic import ValidationError
 
 app = Flask(__name__)
 
-# ✅ Конфигурация Swagger и определения моделей
 app.config['SWAGGER'] = {
     'title': 'ClientService API',
     'uiversion': 3,
@@ -32,7 +31,6 @@ swagger = Swagger(app)
 # 🔹 Контакты
 @app.route('/contacts', methods=['GET'])
 def get_contacts():
-    """Получить список контактов"""
     return jsonify([
         Contact(id=1, name="Иван Иванов", email="ivan@example.com").dict(),
         Contact(id=2, name="Мария Смирнова", email="maria@example.com").dict()
@@ -40,7 +38,6 @@ def get_contacts():
 
 @app.route('/contacts', methods=['POST'])
 def create_contact():
-    """Создать контакт"""
     try:
         contact = Contact(**request.json)
         return jsonify({"message": "Contact created", "contact": contact.dict()})
@@ -49,12 +46,10 @@ def create_contact():
 
 @app.route('/contacts/<contact_id>', methods=['GET'])
 def get_contact(contact_id):
-    """Получить контакт по ID"""
     return jsonify({"id": contact_id, "name": "Test", "email": "test@example.com"})
 
 @app.route('/contacts/<contact_id>', methods=['PUT'])
 def update_contact(contact_id):
-    """Обновить контакт"""
     try:
         contact = Contact(**request.json)
         return jsonify({"message": f"Contact {contact_id} updated", "updated": contact.dict()})
@@ -63,14 +58,11 @@ def update_contact(contact_id):
 
 @app.route('/contacts/<contact_id>', methods=['DELETE'])
 def delete_contact(contact_id):
-    """Удалить контакт"""
     return jsonify({"message": f"Contact {contact_id} deleted"})
-
 
 # 🔹 Кейсы
 @app.route('/cases', methods=['GET'])
 def get_cases():
-    """Получить список кейсов"""
     return jsonify([
         Case(id="101", title="Проблема с продуктом", status="open").dict(),
         Case(id="102", title="Запрос информации", status="closed").dict()
@@ -78,7 +70,6 @@ def get_cases():
 
 @app.route('/cases', methods=['POST'])
 def create_case():
-    """Создать кейс"""
     try:
         case = Case(**request.json)
         return jsonify({"message": "Case created", "case": case.dict()})
@@ -87,12 +78,10 @@ def create_case():
 
 @app.route('/cases/<case_id>', methods=['GET'])
 def get_case(case_id):
-    """Получить кейс по ID"""
     return jsonify({"id": case_id, "title": "Demo", "status": "open"})
 
 @app.route('/cases/<case_id>', methods=['PUT'])
 def update_case(case_id):
-    """Обновить кейс"""
     try:
         case = Case(**request.json)
         return jsonify({"message": f"Case {case_id} updated", "updated": case.dict()})
@@ -101,19 +90,15 @@ def update_case(case_id):
 
 @app.route('/cases/<case_id>', methods=['DELETE'])
 def delete_case(case_id):
-    """Удалить кейс"""
     return jsonify({"message": f"Case {case_id} deleted"})
-
 
 # 🔹 Звонки
 @app.route('/calls', methods=['GET'])
 def get_calls():
-    """Получить список звонков"""
     return jsonify([])
 
 @app.route('/calls', methods=['POST'])
 def create_call():
-    """Создать звонок"""
     try:
         call = Call(**request.json)
         return jsonify({"message": "Call created", "call": call.dict()})
@@ -122,12 +107,10 @@ def create_call():
 
 @app.route('/calls/<call_id>', methods=['GET'])
 def get_call(call_id):
-    """Получить звонок по ID"""
     return jsonify({"id": call_id, "agent_id": "1", "contact_id": "2"})
 
 @app.route('/calls/<call_id>', methods=['PUT'])
 def update_call(call_id):
-    """Обновить звонок"""
     try:
         call = Call(**request.json)
         return jsonify({"message": f"Call {call_id} updated", "updated": call.dict()})
@@ -136,14 +119,41 @@ def update_call(call_id):
 
 @app.route('/calls/<call_id>', methods=['DELETE'])
 def delete_call(call_id):
-    """Удалить звонок"""
     return jsonify({"message": f"Call {call_id} deleted"})
 
+# 🔹 Взаимодействия
+@app.route('/interactions', methods=['GET'])
+def get_interactions():
+    return jsonify([])
 
+@app.route('/interactions', methods=['POST'])
+def create_interaction():
+    try:
+        interaction = Interaction(**request.json)
+        return jsonify({"message": "Interaction created", "interaction": interaction.dict()})
+    except ValidationError as e:
+        return jsonify({"error": e.errors()}), 400
+
+@app.route('/interactions/<interaction_id>', methods=['GET'])
+def get_interaction(interaction_id):
+    return jsonify({"id": interaction_id, "type": "call", "timestamp": "2025-04-06T00:00:00Z"})
+
+@app.route('/interactions/<interaction_id>', methods=['PUT'])
+def update_interaction(interaction_id):
+    try:
+        interaction = Interaction(**request.json)
+        return jsonify({"message": f"Interaction {interaction_id} updated", "updated": interaction.dict()})
+    except ValidationError as e:
+        return jsonify({"error": e.errors()}), 400
+
+@app.route('/interactions/<interaction_id>', methods=['DELETE'])
+def delete_interaction(interaction_id):
+    return jsonify({"message": f"Interaction {interaction_id} deleted"})
+
+# 🔸 Индекс
 @app.route('/')
 def index():
     return '🚀 ClientService API is running. Перейдите на /apidocs для Swagger UI.'
-
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8000)
