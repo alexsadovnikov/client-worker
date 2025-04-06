@@ -1,7 +1,9 @@
 import sys
 from pathlib import Path
 
-sys.path.append(str(Path(__file__).resolve().parent.parent))
+# ✅ Добавим корень проекта в sys.path для корректных импортов
+BASE_DIR = Path(__file__).resolve().parent.parent
+sys.path.append(str(BASE_DIR))
 
 from flask import Flask, jsonify, request
 from flasgger import Swagger
@@ -138,6 +140,41 @@ def update_call(call_id):
 def delete_call(call_id):
     """Удалить звонок"""
     return jsonify({"message": f"Call {call_id} deleted"})
+
+
+# 🔹 Взаимодействия (Interaction)
+@app.route('/interactions', methods=['GET'])
+def get_interactions():
+    """Получить список взаимодействий"""
+    return jsonify([])
+
+@app.route('/interactions', methods=['POST'])
+def create_interaction():
+    """Создать взаимодействие"""
+    try:
+        interaction = Interaction(**request.json)
+        return jsonify({"message": "Interaction created", "interaction": interaction.dict()})
+    except ValidationError as e:
+        return jsonify({"error": e.errors()}), 400
+
+@app.route('/interactions/<interaction_id>', methods=['GET'])
+def get_interaction(interaction_id):
+    """Получить взаимодействие по ID"""
+    return jsonify({"id": interaction_id, "type": "call", "description": "Пример"})
+
+@app.route('/interactions/<interaction_id>', methods=['PUT'])
+def update_interaction(interaction_id):
+    """Обновить взаимодействие"""
+    try:
+        interaction = Interaction(**request.json)
+        return jsonify({"message": f"Interaction {interaction_id} updated", "updated": interaction.dict()})
+    except ValidationError as e:
+        return jsonify({"error": e.errors()}), 400
+
+@app.route('/interactions/<interaction_id>', methods=['DELETE'])
+def delete_interaction(interaction_id):
+    """Удалить взаимодействие"""
+    return jsonify({"message": f"Interaction {interaction_id} deleted"})
 
 
 @app.route('/')
