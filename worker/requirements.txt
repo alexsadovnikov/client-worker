@@ -2,3 +2,5 @@ flask
 kafka-python
 requests
 flasgger
+pydantic
+
