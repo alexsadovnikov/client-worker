@@ -100,12 +100,42 @@ def update_case(case_id):
         return jsonify({"message": f"Case {case_id} updated", "updated": case.dict()})
     except ValidationError as e:
         return jsonify({"error": e.errors()}), 400
+# 🔹 Агенты
+@app.route('/agents', methods=['GET'])
+def get_agents():
+    """Получить список агентов"""
+    return jsonify([
+        Agent(id="1", name="Анна Соколова", department="Поддержка").dict(),
+        Agent(id="2", name="Игорь Орлов", department="Продажи").dict()
+    ])
 
-@app.route('/cases/<case_id>', methods=['DELETE'])
-def delete_case(case_id):
-    """Удалить кейс"""
-    return jsonify({"message": f"Case {case_id} deleted"})
+@app.route('/agents', methods=['POST'])
+def create_agent():
+    """Создать агента"""
+    try:
+        agent = Agent(**request.json)
+        return jsonify({"message": "Agent created", "agent": agent.dict()})
+    except ValidationError as e:
+        return jsonify({"error": e.errors()}), 400
 
+@app.route('/agents/<agent_id>', methods=['GET'])
+def get_agent(agent_id):
+    """Получить агента по ID"""
+    return jsonify({"id": agent_id, "name": "Демо", "department": "Отдел"})
+
+@app.route('/agents/<agent_id>', methods=['PUT'])
+def update_agent(agent_id):
+    """Обновить агента"""
+    try:
+        agent = Agent(**request.json)
+        return jsonify({"message": f"Agent {agent_id} updated", "updated": agent.dict()})
+    except ValidationError as e:
+        return jsonify({"error": e.errors()}), 400
+
+@app.route('/agents/<agent_id>', methods=['DELETE'])
+def delete_agent(agent_id):
+    """Удалить агента"""
+    return jsonify({"message": f"Agent {agent_id} deleted"})
 
 # 🔹 Звонки
 @app.route('/calls', methods=['GET'])
