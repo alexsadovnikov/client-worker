@@ -1,7 +1,9 @@
 import sys
 from pathlib import Path
 
-sys.path.append(str(Path(__file__).resolve().parent.parent))
+# ✅ Добавим корень проекта в sys.path для корректных импортов
+BASE_DIR = Path(__file__).resolve().parent.parent
+sys.path.append(str(BASE_DIR))
 
 from flask import Flask, jsonify, request
 from flasgger import Swagger
@@ -98,12 +100,42 @@ def update_case(case_id):
         return jsonify({"message": f"Case {case_id} updated", "updated": case.dict()})
     except ValidationError as e:
         return jsonify({"error": e.errors()}), 400
+# 🔹 Агенты
+@app.route('/agents', methods=['GET'])
+def get_agents():
+    """Получить список агентов"""
+    return jsonify([
+        Agent(id="1", name="Анна Соколова", department="Поддержка").dict(),
+        Agent(id="2", name="Игорь Орлов", department="Продажи").dict()
+    ])
 
-@app.route('/cases/<case_id>', methods=['DELETE'])
-def delete_case(case_id):
-    """Удалить кейс"""
-    return jsonify({"message": f"Case {case_id} deleted"})
+@app.route('/agents', methods=['POST'])
+def create_agent():
+    """Создать агента"""
+    try:
+        agent = Agent(**request.json)
+        return jsonify({"message": "Agent created", "agent": agent.dict()})
+    except ValidationError as e:
+        return jsonify({"error": e.errors()}), 400
 
+@app.route('/agents/<agent_id>', methods=['GET'])
+def get_agent(agent_id):
+    """Получить агента по ID"""
+    return jsonify({"id": agent_id, "name": "Демо", "department": "Отдел"})
+
+@app.route('/agents/<agent_id>', methods=['PUT'])
+def update_agent(agent_id):
+    """Обновить агента"""
+    try:
+        agent = Agent(**request.json)
+        return jsonify({"message": f"Agent {agent_id} updated", "updated": agent.dict()})
+    except ValidationError as e:
+        return jsonify({"error": e.errors()}), 400
+
+@app.route('/agents/<agent_id>', methods=['DELETE'])
+def delete_agent(agent_id):
+    """Удалить агента"""
+    return jsonify({"message": f"Agent {agent_id} deleted"})
 
 # 🔹 Звонки
 @app.route('/calls', methods=['GET'])
@@ -138,6 +170,41 @@ def update_call(call_id):
 def delete_call(call_id):
     """Удалить звонок"""
     return jsonify({"message": f"Call {call_id} deleted"})
+
+
+# 🔹 Взаимодействия (Interaction)
+@app.route('/interactions', methods=['GET'])
+def get_interactions():
+    """Получить список взаимодействий"""
+    return jsonify([])
+
+@app.route('/interactions', methods=['POST'])
+def create_interaction():
+    """Создать взаимодействие"""
+    try:
+        interaction = Interaction(**request.json)
+        return jsonify({"message": "Interaction created", "interaction": interaction.dict()})
+    except ValidationError as e:
+        return jsonify({"error": e.errors()}), 400
+
+@app.route('/interactions/<interaction_id>', methods=['GET'])
+def get_interaction(interaction_id):
+    """Получить взаимодействие по ID"""
+    return jsonify({"id": interaction_id, "type": "call", "description": "Пример"})
+
+@app.route('/interactions/<interaction_id>', methods=['PUT'])
+def update_interaction(interaction_id):
+    """Обновить взаимодействие"""
+    try:
+        interaction = Interaction(**request.json)
+        return jsonify({"message": f"Interaction {interaction_id} updated", "updated": interaction.dict()})
+    except ValidationError as e:
+        return jsonify({"error": e.errors()}), 400
+
+@app.route('/interactions/<interaction_id>', methods=['DELETE'])
+def delete_interaction(interaction_id):
+    """Удалить взаимодействие"""
+    return jsonify({"message": f"Interaction {interaction_id} deleted"})
 
 
 @app.route('/')

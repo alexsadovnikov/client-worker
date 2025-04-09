@@ -1,6 +1,6 @@
-flask
 flasgger
+flask
 kafka-python
-requests
 pytest
 pytest-cov
+requests
