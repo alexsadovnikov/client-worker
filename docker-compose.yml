@@ -1,12 +1,14 @@
+version: '3.9'
+
 services:
   worker:
     build:
-      context: ./client-worker/worker
+      context: ./worker
     ports:
       - "5050:5050"
     volumes:
-      - ./client-worker/worker:/app
-      - ./client-worker/worker/static:/app/static
+      - ./worker:/app
+      - ./worker/static:/app/static
     depends_on:
       - kafka
       - crm
