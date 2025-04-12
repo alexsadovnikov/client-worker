@@ -4,3 +4,4 @@ kafka-python
 pytest
 pytest-cov
 requests
+flask-jwt-extended

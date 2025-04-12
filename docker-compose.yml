@@ -1,56 +1,33 @@
-version: "3.8"
-
 services:
+  worker:
+    build:
+      context: ./client-worker/worker
+    ports:
+      - "5050:5050"
+    volumes:
+      - ./client-worker/worker:/app
+      - ./client-worker/worker/static:/app/static
+    depends_on:
+      - kafka
+      - crm
+
   kafka:
     image: bitnami/kafka:latest
-    container_name: kafka
     ports:
       - "9092:9092"
     environment:
-      - KAFKA_KRAFT_MODE=true
       - KAFKA_CFG_NODE_ID=1
       - KAFKA_CFG_PROCESS_ROLES=broker,controller
-      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=PLAINTEXT:PLAINTEXT,CONTROLLER:PLAINTEXT
+      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT
       - KAFKA_CFG_LISTENERS=PLAINTEXT://0.0.0.0:9092,CONTROLLER://0.0.0.0:9093
-      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://kafka:9092
+      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://localhost:9092
       - KAFKA_CFG_CONTROLLER_LISTENER_NAMES=CONTROLLER
-      - KAFKA_CFG_CONTROLLER_QUORUM_VOTERS=1@kafka:9093
+      - KAFKA_CFG_CONTROLLER_QUORUM_VOTERS=1@localhost:9093
       - KAFKA_CFG_CLUSTER_ID=V4XjsoY1QkOz9mmoDLjSRA
       - ALLOW_PLAINTEXT_LISTENER=yes
-    healthcheck:
-      test: ["CMD", "kafka-topics.sh", "--bootstrap-server", "localhost:9092", "--list"]
-      interval: 10s
-      timeout: 5s
-      retries: 10
 
   crm:
     build:
       context: ./crm
-    container_name: crm
     ports:
-      - "5150:5000"
-    working_dir: /app
-    command: python crm_mock.py
-
-
-  worker:
-    build:
-      context: ./worker
-    container_name: worker
-    environment:
-      - KAFKA_BOOTSTRAP_SERVERS=kafka:9092
-      - CRM_API_URL=http://crm:5000
-    depends_on:
-      - kafka
-      - crm
-    ports:
-      - "5050:5050"
-
-  producer:
-    build:
-      context: ./producer
-    container_name: producer
-    environment:
-      - KAFKA_BOOTSTRAP_SERVERS=kafka:9092
-    depends_on:
-      - kafka
+      - "5051:5000"
