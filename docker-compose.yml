@@ -1,12 +1,12 @@
 services:
   worker:
     build:
-      context: ./worker
+      context: ./client-worker/worker
     ports:
       - "5050:5050"
     volumes:
-      - ./worker:/app
-      - ./worker/static:/app/static
+      - ./client-worker/worker:/app
+      - ./client-worker/worker/static:/app/static
     depends_on:
       - kafka
       - crm
@@ -31,3 +31,10 @@ services:
       context: ./crm
     ports:
       - "5051:5000"
+"""
+
+# Сохраняем в корень проекта
+compose_file = Path("docker-compose.yml")
+compose_file.write_text(fixed_compose, encoding="utf-8")
+
+compose_file.name
