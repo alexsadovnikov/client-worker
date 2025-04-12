@@ -1,12 +1,13 @@
+docker_compose_fixed = """\
 services:
   worker:
     build:
-      context: ./client-worker/worker
+      context: ./worker
     ports:
       - "5050:5050"
     volumes:
-      - ./client-worker/worker:/app
-      - ./client-worker/worker/static:/app/static
+      - ./worker:/app
+      - ./worker/static:/app/static
     depends_on:
       - kafka
       - crm
@@ -31,3 +32,8 @@ services:
       context: ./crm
     ports:
       - "5051:5000"
+"""
+
+compose_path = Path("/mnt/data/docker-compose.yml")
+compose_path.write_text(docker_compose_fixed, encoding="utf-8")
+compose_path.name
