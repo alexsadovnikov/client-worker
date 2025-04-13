@@ -1,0 +1,28 @@
+name: CI/CD для ClientService
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🛎️ Клонирование репозитория
+        uses: actions/checkout@v4
+
+      - name: 🛠 Сборка и запуск контейнеров
+        run: |
+          docker compose -f docker-compose.yml up -d --build
+
+      - name: 🔍 Проверка запущенных контейнеров
+        run: |
+          docker compose -f docker-compose.yml ps
+
+      - name: 🔴 Остановка и удаление контейнеров
+        run: |
+          docker compose -f docker-compose.yml down
