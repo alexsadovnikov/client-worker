@@ -5,3 +5,4 @@ flask-swagger-ui
 requests
 kafka-python
 email-validator
+flask-jwt-extended
