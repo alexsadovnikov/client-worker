@@ -28,6 +28,6 @@ services:
 
   crm:
     build:
-      context: ./crm
+      context: ./client-worker/crm
     ports:
       - "5051:5000"
