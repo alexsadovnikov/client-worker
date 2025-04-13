@@ -7,3 +7,4 @@ kafka-python
 email-validator
 flask-jwt-extended
 flask-jwt-extended
+pydantic[email]
