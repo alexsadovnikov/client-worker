@@ -1,39 +1,80 @@
-version: "3.8"
-
+# infrastructure/docker-compose.yml
 services:
   postgres:
     image: postgres:15-alpine
     container_name: postgres
+    env_file: 
+      - .env
     environment:
-      POSTGRES_DB: crm
-      POSTGRES_USER: crmuser
-      POSTGRES_PASSWORD: secret_password
+      POSTGRES_DB:      ${POSTGRES_DB}
+      POSTGRES_USER:    ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     volumes:
       - pg_data:/var/lib/postgresql/data
-    networks:
-      - crm_network
     ports:
       - "5432:5432"
+    networks:
+      - crm_network
 
   kafka:
-    # … ваши существующие настройки
+    image: bitnami/kafka:latest
+    container_name: kafka
+    env_file:
+      - .env
+    environment:
+      - KAFKA_KRAFT_MODE=true
+      - KAFKA_CFG_NODE_ID=1
+      - KAFKA_CFG_PROCESS_ROLES=broker,controller
+      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=PLAINTEXT:PLAINTEXT,CONTROLLER:PLAINTEXT
+      - KAFKA_CFG_LISTENERS=PLAINTEXT://0.0.0.0:9092,CONTROLLER://0.0.0.0:9093
+      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://kafka:9092
+      - KAFKA_CFG_CONTROLLER_LISTENER_NAMES=CONTROLLER
+      - KAFKA_CFG_CONTROLLER_QUORUM_VOTERS=1@kafka:9093
+      - KAFKA_CFG_CLUSTER_ID=V4XjsoY1QkOz9mmoDLjSRA
+      - ALLOW_PLAINTEXT_LISTENER=yes
+    ports:
+      - "29092:9092"
     networks:
       - crm_network
 
-  crm:
-    # … mock‑CRM
+  contacts:
+    build:
+      context: ../contacts-service
+      dockerfile: Dockerfile
+    container_name: contacts
+    ports:
+      - "5001:5000"
     networks:
       - crm_network
+    depends_on:
+      - postgres
+      - kafka
 
-  worker:
-    # … Flask‑worker
+  projects:
+    build:
+      context: ../projects-service
+      dockerfile: Dockerfile
+    container_name: projects
+    ports:
+      - "5002:5000"
     networks:
       - crm_network
+    depends_on:
+      - postgres
+      - kafka
 
-  producer:
-    # … Kafka‑producer
+  plans:
+    build:
+      context: ../plans-service
+      dockerfile: Dockerfile
+    container_name: plans
+    ports:
+      - "5003:5000"
     networks:
       - crm_network
+    depends_on:
+      - postgres
+      - kafka
 
 networks:
   crm_network:

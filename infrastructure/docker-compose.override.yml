@@ -1,0 +1,20 @@
+services:
+
+  contacts:
+
+    volumes:
+
+      - ../contacts-service/src:/app
+
+  projects:
+
+    volumes:
+
+      - ../projects-service/src:/app
+
+  plans:
+
+    volumes:
+
+      - ../plans-service/src:/app
+
