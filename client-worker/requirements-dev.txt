@@ -1,6 +1,0 @@
-flask
-flasgger
-kafka-python
-requests
-pytest
-pytest-cov

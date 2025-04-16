@@ -1,51 +1,44 @@
-└── Makefile
-└── README.md
-└── client-worker
-    └── client-worker.wiki
-    └── client_service_api_doc.html
-    └── crm
-        └── Dockerfile
-        └── crm_mock.py
-    └── generate_dashboard.py
-    └── kafka_send.py
-    └── producer
-        └── Dockerfile
-        └── kafka_send.py
-        └── producer.py
-        └── requirements.txt
-    └── requirements-dev.txt
-    └── requirements.txt
-    └── worker
-        └── Dockerfile
-        └── app
-            └── Main.py
-        └── requirements.txt
-        └── schemas
-            └── __init__.py
-            └── agent.py
-            └── call.py
-            └── case.py
-            └── contact.py
-            └── interaction.py
-        └── static
-            └── openapi.yaml
-        └── tests
-            └── test_auth.py
-        └── worker.py
-└── client_service_api_doc.html
-└── coverage.xml
-└── dashboard
-    └── requirements-dashboard.txt
-    └── streamlit_app.py
-└── docker-compose.yml
-└── generate_dashboard.py
-└── generate_wiki_docs.py
-└── project_structure.txt
-└── requirements-dev.txt
-└── requirements.txt
-└── schemas
-    └── agent.py
-    └── call.py
-    └── case.py
-    └── contact.py
-    └── interaction.py
+client-service/
+├── Makefile
+├── README.md
+├── docker-compose.yml
+├── coverage.xml
+├── generate_dashboard.py
+├── generate_wiki_docs.py
+├── requirements-dev.txt
+├── shared/
+│   └── schemas/
+│       ├── agent.py
+│       ├── call.py
+│       ├── case.py
+│       ├── contact.py
+│       ├── interaction.py
+│       └── message.py
+├── dashboard/
+│   ├── streamlit_app.py
+│   └── requirements-dashboard.txt
+├── crm/
+│   ├── Dockerfile
+│   ├── crm_mock.py
+│   └── requirements.txt
+├── producer/
+│   ├── Dockerfile
+│   ├── kafka_send.py
+│   ├── producer.py
+│   └── requirements.txt
+├── worker/
+│   ├── Dockerfile
+│   ├── requirements.txt
+│   ├── static/
+│   │   └── openapi.yaml
+│   ├── tests/
+│   │   └── test_auth.py
+│   └── app/
+│       └── main.py
+└── client-worker/
+    ├── client-worker.wiki
+    ├── client_service_api_doc.html
+    ├── requirements.txt
+    ├── requirements-dev.txt
+    ├── kafka_send.py
+    └── crm/ (архивная структура)
