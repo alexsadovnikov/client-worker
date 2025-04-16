@@ -1,0 +1,43 @@
+version: "3.8"
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: postgres
+    environment:
+      POSTGRES_DB: crm
+      POSTGRES_USER: crmuser
+      POSTGRES_PASSWORD: secret_password
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    networks:
+      - crm_network
+    ports:
+      - "5432:5432"
+
+  kafka:
+    # … ваши существующие настройки
+    networks:
+      - crm_network
+
+  crm:
+    # … mock‑CRM
+    networks:
+      - crm_network
+
+  worker:
+    # … Flask‑worker
+    networks:
+      - crm_network
+
+  producer:
+    # … Kafka‑producer
+    networks:
+      - crm_network
+
+networks:
+  crm_network:
+    driver: bridge
+
+volumes:
+  pg_data:
