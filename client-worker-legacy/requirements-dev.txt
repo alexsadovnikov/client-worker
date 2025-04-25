@@ -1,0 +1,9 @@
+flask
+flasgger
+kafka-python
+requests
+pytest
+pytest-cov
+flask_sqlalchemy
+flask_migrate
+psycopg2-binary

@@ -1,20 +1,19 @@
 services:
-
-  contacts:
-
+  crm:
     volumes:
+      - ../services/crm/app:/app
+    environment:
+      - FLASK_ENV=development
 
-      - ../contacts-service/src:/app
-
-  projects:
-
+  worker:
     volumes:
+      - ../services/worker/app:/app/app
+      - ../shared:/app/shared
+    environment:
+      - FLASK_ENV=development
 
-      - ../projects-service/src:/app
-
-  plans:
-
+  producer:
     volumes:
-
-      - ../plans-service/src:/app
-
+      - ../services/producer:/app
+    environment:
+      - FLASK_ENV=development

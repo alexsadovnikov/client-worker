@@ -3,12 +3,12 @@ services:
   postgres:
     image: postgres:15-alpine
     container_name: postgres
-    env_file: 
+    env_file:
       - .env
     environment:
-      POSTGRES_DB:      ${POSTGRES_DB}
-      POSTGRES_USER:    ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
     volumes:
       - pg_data:/var/lib/postgresql/data
     ports:
@@ -23,8 +23,8 @@ services:
       - .env
     environment:
       - KAFKA_KRAFT_MODE=true
-      - KAFKA_CFG_NODE_ID=1
       - KAFKA_CFG_PROCESS_ROLES=broker,controller
+      - KAFKA_CFG_NODE_ID=1
       - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=PLAINTEXT:PLAINTEXT,CONTROLLER:PLAINTEXT
       - KAFKA_CFG_LISTENERS=PLAINTEXT://0.0.0.0:9092,CONTROLLER://0.0.0.0:9093
       - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://kafka:9092
@@ -37,43 +37,56 @@ services:
     networks:
       - crm_network
 
-  contacts:
+  crm:
     build:
-      context: ../contacts-service
-      dockerfile: Dockerfile
-    container_name: contacts
+      context: ..   # корень репозитория (ClientServiceDocs)
+      dockerfile: services/crm/Dockerfile
+    container_name: crm
+    env_file:
+      - .env
+    working_dir: /app
+    command: python app/crm_mock.py
     ports:
-      - "5001:5000"
+      - "5054:5000"
     networks:
       - crm_network
     depends_on:
       - postgres
       - kafka
 
-  projects:
+  worker:
     build:
-      context: ../projects-service
-      dockerfile: Dockerfile
-    container_name: projects
+      context: ..
+      dockerfile: services/worker/Dockerfile
+    container_name: worker
+    env_file:
+      - .env
+    environment:
+      - DATABASE_URL=${DATABASE_URL}
+      - KAFKA_BOOTSTRAP_SERVERS=kafka:9092
+      - CRM_API_URL=http://crm:5000
+    working_dir: /app
+    command: python app/main.py
     ports:
-      - "5002:5000"
+      - "5053:5050"
     networks:
       - crm_network
     depends_on:
       - postgres
       - kafka
+      - crm
 
-  plans:
+  producer:
     build:
-      context: ../plans-service
-      dockerfile: Dockerfile
-    container_name: plans
-    ports:
-      - "5003:5000"
+      context: ..
+      dockerfile: services/producer/Dockerfile
+    container_name: producer
+    env_file:
+      - .env
+    command: python producer.py
     networks:
       - crm_network
     depends_on:
-      - postgres
       - kafka
 
 networks:

@@ -1,0 +1,10 @@
+flask
+flasgger
+pyyaml
+flask-swagger-ui
+requests
+kafka-python
+email-validator
+flask-jwt-extended
+flask-jwt-extended
+pydantic[email]
