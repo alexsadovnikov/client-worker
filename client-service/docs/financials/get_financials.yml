@@ -1,0 +1,10 @@
+summary: Получение списка финансовых записей
+tags:
+  - FinancialRecord
+responses:
+  200:
+    description: Успешный ответ
+    schema:
+      type: array
+      items:
+        $ref: '#/definitions/FinancialRecord'

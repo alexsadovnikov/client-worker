@@ -1,0 +1,19 @@
+summary: Обновление финансовой записи по ID
+tags:
+  - FinancialRecord
+parameters:
+  - in: path
+    name: financial_id
+    required: true
+    type: integer
+    description: ID финансовой записи
+  - in: body
+    name: body
+    required: true
+    schema:
+      $ref: '#/definitions/FinancialRecordUpdate'
+responses:
+  200:
+    description: Финансовая запись обновлена
+    schema:
+      $ref: '#/definitions/FinancialRecord'
