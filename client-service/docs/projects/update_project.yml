@@ -1,0 +1,19 @@
+summary: Обновление проекта по ID
+tags:
+  - Project
+parameters:
+  - in: path
+    name: project_id
+    required: true
+    type: integer
+    description: ID проекта
+  - in: body
+    name: body
+    required: true
+    schema:
+      $ref: '#/definitions/ProjectUpdate'
+responses:
+  200:
+    description: Проект обновлён
+    schema:
+      $ref: '#/definitions/Project'

@@ -6,7 +6,7 @@ parameters:
     name: timesheet_id
     required: true
     type: integer
-    description: ID записи учёта времени
+    description: ID записи
 responses:
   200:
     description: Запись удалена

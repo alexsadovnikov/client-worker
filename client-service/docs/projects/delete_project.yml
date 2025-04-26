@@ -1,15 +1,15 @@
-summary: Удаление задачи по ID
+summary: Удаление проекта по ID
 tags:
-  - Task
+  - Project
 parameters:
   - in: path
-    name: task_id
+    name: project_id
     required: true
     type: integer
-    description: ID задачи
+    description: ID проекта
 responses:
   200:
-    description: Задача удалена
+    description: Проект удалён
     schema:
       type: object
       properties:

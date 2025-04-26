@@ -1,0 +1,10 @@
+summary: Получение списка задач
+tags:
+  - Task
+responses:
+  200:
+    description: Успешный ответ
+    schema:
+      type: array
+      items:
+        $ref: '#/definitions/Task'

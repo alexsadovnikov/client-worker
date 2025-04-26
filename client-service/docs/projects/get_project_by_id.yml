@@ -1,0 +1,14 @@
+summary: Получение проекта по ID
+tags:
+  - Project
+parameters:
+  - in: path
+    name: project_id
+    required: true
+    type: integer
+    description: ID проекта
+responses:
+  200:
+    description: Успешный ответ
+    schema:
+      $ref: '#/definitions/Project'

@@ -1,0 +1,14 @@
+summary: Получение задачи по ID
+tags:
+  - Task
+parameters:
+  - in: path
+    name: task_id
+    required: true
+    type: integer
+    description: ID задачи
+responses:
+  200:
+    description: Успешный ответ
+    schema:
+      $ref: '#/definitions/Task'

@@ -1,0 +1,10 @@
+summary: Получение списка пользователей
+tags:
+  - User
+responses:
+  200:
+    description: Успешный ответ
+    schema:
+      type: array
+      items:
+        $ref: '#/definitions/User'

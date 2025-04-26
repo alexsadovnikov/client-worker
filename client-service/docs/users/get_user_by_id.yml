@@ -1,0 +1,14 @@
+summary: Получение пользователя по ID
+tags:
+  - User
+parameters:
+  - in: path
+    name: user_id
+    required: true
+    type: integer
+    description: ID пользователя
+responses:
+  200:
+    description: Успешный ответ
+    schema:
+      $ref: '#/definitions/User'

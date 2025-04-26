@@ -1,0 +1,14 @@
+summary: Создание нового пользователя
+tags:
+  - User
+parameters:
+  - in: body
+    name: body
+    required: true
+    schema:
+      $ref: '#/definitions/UserCreate'
+responses:
+  201:
+    description: Пользователь создан
+    schema:
+      $ref: '#/definitions/User'

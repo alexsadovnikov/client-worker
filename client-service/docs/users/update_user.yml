@@ -1,0 +1,19 @@
+summary: Обновление пользователя по ID
+tags:
+  - User
+parameters:
+  - in: path
+    name: user_id
+    required: true
+    type: integer
+    description: ID пользователя
+  - in: body
+    name: body
+    required: true
+    schema:
+      $ref: '#/definitions/UserUpdate'
+responses:
+  200:
+    description: Пользователь обновлён
+    schema:
+      $ref: '#/definitions/User'

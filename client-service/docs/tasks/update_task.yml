@@ -1,0 +1,19 @@
+summary: Обновление задачи по ID
+tags:
+  - Task
+parameters:
+  - in: path
+    name: task_id
+    required: true
+    type: integer
+    description: ID задачи
+  - in: body
+    name: body
+    required: true
+    schema:
+      $ref: '#/definitions/TaskUpdate'
+responses:
+  200:
+    description: Задача обновлена
+    schema:
+      $ref: '#/definitions/Task'
