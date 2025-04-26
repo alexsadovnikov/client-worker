@@ -1,0 +1,14 @@
+summary: Создание новой записи учёта времени
+tags:
+  - Timesheet
+parameters:
+  - in: body
+    name: body
+    required: true
+    schema:
+      $ref: '#/definitions/TimesheetCreate'
+responses:
+  201:
+    description: Запись создана
+    schema:
+      $ref: '#/definitions/Timesheet'

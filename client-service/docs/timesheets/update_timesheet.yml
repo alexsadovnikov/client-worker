@@ -1,0 +1,19 @@
+summary: Обновление записи учёта времени по ID
+tags:
+  - Timesheet
+parameters:
+  - in: path
+    name: timesheet_id
+    required: true
+    type: integer
+    description: ID записи учёта времени
+  - in: body
+    name: body
+    required: true
+    schema:
+      $ref: '#/definitions/TimesheetUpdate'
+responses:
+  200:
+    description: Запись обновлена
+    schema:
+      $ref: '#/definitions/Timesheet'

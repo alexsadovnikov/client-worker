@@ -1,0 +1,17 @@
+summary: Удаление записи учёта времени по ID
+tags:
+  - Timesheet
+parameters:
+  - in: path
+    name: timesheet_id
+    required: true
+    type: integer
+    description: ID записи учёта времени
+responses:
+  200:
+    description: Запись удалена
+    schema:
+      type: object
+      properties:
+        message:
+          type: string
