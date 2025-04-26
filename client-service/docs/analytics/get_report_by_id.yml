@@ -1,0 +1,14 @@
+summary: Получение аналитического отчёта по ID
+tags:
+  - AnalyticsReport
+parameters:
+  - in: path
+    name: report_id
+    required: true
+    type: integer
+    description: ID отчёта
+responses:
+  200:
+    description: Успешный ответ
+    schema:
+      $ref: '#/definitions/AnalyticsReport'

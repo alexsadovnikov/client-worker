@@ -1,0 +1,14 @@
+summary: Создание нового аналитического отчёта
+tags:
+  - AnalyticsReport
+parameters:
+  - in: body
+    name: body
+    required: true
+    schema:
+      $ref: '#/definitions/AnalyticsReportCreate'
+responses:
+  201:
+    description: Отчёт создан
+    schema:
+      $ref: '#/definitions/AnalyticsReport'
