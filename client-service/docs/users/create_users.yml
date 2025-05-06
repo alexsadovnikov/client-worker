@@ -1,14 +1,16 @@
 summary: Создание нового пользователя
 tags:
   - User
-parameters:
-  - in: body
-    name: body
-    required: true
-    schema:
-      $ref: '#/definitions/UserCreate'
+requestBody:
+  required: true
+  content:
+    application/json:
+      schema:
+        $ref: '#/definitions/UserCreate'
 responses:
   201:
-    description: Пользователь создан
-    schema:
-      $ref: '#/definitions/User'
+    description: Пользователь успешно создан
+    content:
+      application/json:
+        schema:
+          $ref: '#/definitions/User'

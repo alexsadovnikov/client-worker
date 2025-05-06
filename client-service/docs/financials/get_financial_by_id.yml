@@ -2,13 +2,15 @@ summary: Получение финансовой записи по ID
 tags:
   - FinancialRecord
 parameters:
-  - in: path
-    name: financial_id
+  - name: financial_id
+    in: path
     required: true
-    type: integer
-    description: ID финансовой записи
+    schema:
+      type: integer
 responses:
   200:
-    description: Успешный ответ
-    schema:
-      $ref: '#/definitions/FinancialRecord'
+    description: Финансовая запись получена
+    content:
+      application/json:
+        schema:
+          $ref: '#/definitions/FinancialRecord'

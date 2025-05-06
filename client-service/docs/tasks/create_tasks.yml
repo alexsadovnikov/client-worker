@@ -1,14 +1,16 @@
 summary: Создание новой задачи
 tags:
   - Task
-parameters:
-  - in: body
-    name: body
-    required: true
-    schema:
-      $ref: '#/definitions/TaskCreate'
+requestBody:
+  required: true
+  content:
+    application/json:
+      schema:
+        $ref: '#/definitions/TaskCreate'
 responses:
   201:
-    description: Задача создана
-    schema:
-      $ref: '#/definitions/Task'
+    description: Задача успешно создана
+    content:
+      application/json:
+        schema:
+          $ref: '#/definitions/Task'

@@ -1,17 +1,19 @@
-summary: Удаление финансовой записи по ID
+summary: Удаление финансовой записи
 tags:
   - FinancialRecord
 parameters:
-  - in: path
-    name: financial_id
+  - name: financial_id
+    in: path
     required: true
-    type: integer
-    description: ID финансовой записи
+    schema:
+      type: integer
 responses:
   200:
     description: Финансовая запись удалена
-    schema:
-      type: object
-      properties:
-        message:
-          type: string
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            message:
+              type: string

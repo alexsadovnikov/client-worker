@@ -2,13 +2,15 @@ summary: Получение записи учёта времени по ID
 tags:
   - Timesheet
 parameters:
-  - in: path
-    name: timesheet_id
+  - name: timesheet_id
+    in: path
     required: true
-    type: integer
-    description: ID записи
+    schema:
+      type: integer
 responses:
   200:
-    description: Успешный ответ
-    schema:
-      $ref: '#/definitions/Timesheet'
+    description: Запись учёта времени получена
+    content:
+      application/json:
+        schema:
+          $ref: '#/definitions/Timesheet'

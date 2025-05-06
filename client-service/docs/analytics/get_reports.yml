@@ -1,10 +1,12 @@
-summary: Получение списка аналитических отчётов
+summary: Получение списка аналитических отчетов
 tags:
   - AnalyticsReport
 responses:
   200:
-    description: Успешный ответ
-    schema:
-      type: array
-      items:
-        $ref: '#/definitions/AnalyticsReport'
+    description: Список аналитических отчётов получен
+    content:
+      application/json:
+        schema:
+          type: array
+          items:
+            $ref: '#/definitions/AnalyticsReport'

@@ -2,16 +2,18 @@ summary: Удаление задачи по ID
 tags:
   - Task
 parameters:
-  - in: path
-    name: task_id
+  - name: task_id
+    in: path
     required: true
-    type: integer
-    description: ID задачи
+    schema:
+      type: integer
 responses:
   200:
-    description: Задача удалена
-    schema:
-      type: object
-      properties:
-        message:
-          type: string
+    description: Задача успешно удалена
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            message:
+              type: string

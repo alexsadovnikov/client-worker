@@ -1,10 +1,12 @@
-summary: Получение списка записей учёта времени
+summary: Получение списка учёта времени
 tags:
   - Timesheet
 responses:
   200:
-    description: Успешный ответ
-    schema:
-      type: array
-      items:
-        $ref: '#/definitions/Timesheet'
+    description: Список записей учёта времени получен
+    content:
+      application/json:
+        schema:
+          type: array
+          items:
+            $ref: '#/definitions/Timesheet'

@@ -2,13 +2,15 @@ summary: Получение задачи по ID
 tags:
   - Task
 parameters:
-  - in: path
-    name: task_id
+  - name: task_id
+    in: path
     required: true
-    type: integer
-    description: ID задачи
+    schema:
+      type: integer
 responses:
   200:
-    description: Успешный ответ
-    schema:
-      $ref: '#/definitions/Task'
+    description: Задача получена
+    content:
+      application/json:
+        schema:
+          $ref: '#/definitions/Task'

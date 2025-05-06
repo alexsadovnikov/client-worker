@@ -1,17 +1,19 @@
-summary: Удаление аналитического отчёта по ID
+summary: Удаление аналитического отчёта
 tags:
   - AnalyticsReport
 parameters:
-  - in: path
-    name: report_id
+  - name: report_id
+    in: path
     required: true
-    type: integer
-    description: ID отчёта
+    schema:
+      type: integer
 responses:
   200:
-    description: Отчёт удалён
-    schema:
-      type: object
-      properties:
-        message:
-          type: string
+    description: Аналитический отчёт удалён
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            message:
+              type: string

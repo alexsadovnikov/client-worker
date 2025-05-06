@@ -1,14 +1,16 @@
 summary: Создание новой финансовой записи
 tags:
   - FinancialRecord
-parameters:
-  - in: body
-    name: body
-    required: true
-    schema:
-      $ref: '#/definitions/FinancialRecordCreate'
+requestBody:
+  required: true
+  content:
+    application/json:
+      schema:
+        $ref: '#/definitions/FinancialRecordCreate'
 responses:
   201:
     description: Финансовая запись создана
-    schema:
-      $ref: '#/definitions/FinancialRecord'
+    content:
+      application/json:
+        schema:
+          $ref: '#/definitions/FinancialRecord'

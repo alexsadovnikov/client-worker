@@ -2,16 +2,18 @@ summary: Удаление пользователя по ID
 tags:
   - User
 parameters:
-  - in: path
-    name: user_id
+  - name: user_id
+    in: path
     required: true
-    type: integer
-    description: ID пользователя
+    schema:
+      type: integer
 responses:
   200:
-    description: Пользователь удалён
-    schema:
-      type: object
-      properties:
-        message:
-          type: string
+    description: Пользователь успешно удалён
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            message:
+              type: string

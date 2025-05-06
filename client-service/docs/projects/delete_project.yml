@@ -2,16 +2,18 @@ summary: Удаление проекта по ID
 tags:
   - Project
 parameters:
-  - in: path
-    name: project_id
+  - name: project_id
+    in: path
     required: true
-    type: integer
-    description: ID проекта
+    schema:
+      type: integer
 responses:
   200:
-    description: Проект удалён
-    schema:
-      type: object
-      properties:
-        message:
-          type: string
+    description: Проект успешно удалён
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            message:
+              type: string

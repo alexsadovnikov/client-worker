@@ -24,3 +24,12 @@ worker/openapi.generated.yaml
 dashboard/__pycache__/
 
 .DS_Store
+# Исключаем миграции Alembic и служебные файлы
+migrations/
+*.pyc
+__pycache__/
+.env
+.venv
+openapi.generated.yaml
+coverage.xml
+htmlcov/

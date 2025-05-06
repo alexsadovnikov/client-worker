@@ -2,13 +2,15 @@ summary: Получение проекта по ID
 tags:
   - Project
 parameters:
-  - in: path
-    name: project_id
+  - name: project_id
+    in: path
     required: true
-    type: integer
-    description: ID проекта
+    schema:
+      type: integer
 responses:
   200:
-    description: Успешный ответ
-    schema:
-      $ref: '#/definitions/Project'
+    description: Проект получен
+    content:
+      application/json:
+        schema:
+          $ref: '#/definitions/Project'

@@ -1,332 +1,142 @@
-#
-client-service
-client-service.wiki
-client-worker-legacy
-client_service_api_doc.html
-infrastructure
-markdown-редактором
-project_structure.txt
-services
-shared
-или
-любым
-открой
+.
+├── или
+├── любым
+├── открой
+├── #
+├── client_service_api_doc.html
+├── client-service
+│   ├── api_gateway
+│   │   ├── app
+│   │   ├── Dockerfile
+│   │   ├── requirements.txt
+│   │   ├── run_api_gateway.sh
+│   │   └── run_api_gateway.sh.save
+│   ├── app
+│   │   ├── __init__.py
+│   │   ├── extensions.py
+│   │   ├── models
+│   │   ├── routes
+│   │   ├── schemas
+│   │   ├── static
+│   │   └── utils
+│   ├── app.db
+│   ├── auth
+│   │   ├── app
+│   │   ├── Dockerfile
+│   │   └── requirements.txt
+│   ├── chat
+│   │   ├── app
+│   │   ├── Dockerfile
+│   │   └── requirements.txt
+│   ├── config.py
+│   ├── coverage.xml
+│   ├── crm
+│   │   ├── app
+│   │   ├── Dockerfile
+│   │   └── requirements.txt
+│   ├── dashboard
+│   │   ├── requirements-dashboard.txt
+│   │   └── streamlit_app.py
+│   ├── Dockerfile
+│   ├── docs
+│   │   ├── analytics
+│   │   ├── financials
+│   │   ├── projects
+│   │   ├── tasks
+│   │   ├── timesheets
+│   │   └── users
+│   ├── generate_dashboard.py
+│   ├── generate_wiki_docs.py
+│   ├── instance
+│   │   ├── app.db
+│   │   └── dev.db
+│   ├── Makefile
+│   ├── migrations
+│   │   ├── alembic.ini
+│   │   ├── env.py
+│   │   ├── README
+│   │   ├── script.py.mako
+│   │   └── versions
+│   ├── producer
+│   │   ├── Dockerfile
+│   │   ├── kafka_send.py
+│   │   ├── kafka_test.py
+│   │   ├── producer.py
+│   │   └── requirements.txt
+│   ├── README.md
+│   ├── requirements-dev.txt
+│   ├── requirements.txt
+│   ├── run.py
+│   ├── tests
+│   │   ├── __init__.py
+│   │   ├── test_analytics.py
+│   │   ├── test_financials.py
+│   │   ├── test_projects.py
+│   │   └── test_timesheets.py
+│   └── worker
+│       ├── __init__.py
+│       ├── app
+│       ├── Dockerfile
+│       ├── requirements.txt
+│       ├── shared
+│       ├── static
+│       ├── tests
+│       ├── worker
+│       └── wsgi.py
+├── client-service.wiki
+│   ├── API_Reference.md
+│   ├── API.md
+│   ├── Architecture.md
+│   ├── Auth.md
+│   ├── Home.md
+│   ├── HowToDeploy.md
+│   ├── Models.md
+│   ├── Routes.md
+│   ├── Setup.md
+│   ├── Timesheets.md
+│   └── WebSocket.md
+├── client-worker-legacy
+│   ├── client_service_api_doc.html
+│   ├── client-worker.wiki
+│   ├── generate_dashboard.py
+│   ├── kafka_send.py
+│   └── requirements-dev.txt
+├── docker-compose.yml
+├── infrastructure
+│   ├── crm.log
+│   ├── docker-compose.override.yml
+│   ├── docker-compose.yml
+│   ├── producer.log
+│   ├── README.md
+│   └── worker.log
+├── markdown-редактором
+├── project_structure.txt
+├── run_api_gateway.sh
+├── run_api_gateway.sh.save
+├── run_api_gateway.shччччЧx
+├── services
+│   ├── crm
+│   │   ├── app
+│   │   ├── Dockerfile
+│   │   └── requirements.txt
+│   ├── producer
+│   │   ├── Dockerfile
+│   │   ├── producer.py
+│   │   └── requirements.txt
+│   └── worker
+│       ├── app
+│       ├── Dockerfile
+│       ├── requirements.txt
+│       └── worker.py
+└── shared
+    └── schemas
+        ├── __init__.py
+        ├── agent.py
+        ├── call.py
+        ├── case.py
+        ├── contact.py
+        ├── interaction.py
+        ├── message.py
+        └── user.py
 
-./client-service:
-Dockerfile
-Makefile
-README.md
-__pycache__
-api_gateway
-app
-app.db
-auth
-chat
-config.py
-coverage.xml
-crm
-dashboard
-docker-compose.yml
-generate_dashboard.py
-generate_wiki_docs.py
-instance
-migrations
-producer
-requirements-dev.txt
-requirements.txt
-run.py
-shared
-tests
-worker
-
-./client-service/__pycache__:
-config.cpython-313.pyc
-run.cpython-313.pyc
-
-./client-service/api_gateway:
-Dockerfile
-app
-requirements.txt
-
-./client-service/api_gateway/app:
-main.py
-
-./client-service/app:
-__init__.py
-__pycache__
-extensions.py
-models
-routes
-schemas
-utils
-
-./client-service/app/__pycache__:
-__init__.cpython-313.pyc
-extensions.cpython-313.pyc
-
-./client-service/app/models:
-__init__.py
-__pycache__
-analytics.py
-base.py
-expense.py
-financial.py
-init.py
-project.py
-task.py
-timesheet.py
-user.py
-
-./client-service/app/models/__pycache__:
-__init__.cpython-313.pyc
-analytics.cpython-313.pyc
-expense.cpython-313.pyc
-financial.cpython-313.pyc
-project.cpython-313.pyc
-task.cpython-313.pyc
-timesheet.cpython-313.pyc
-user.cpython-313.pyc
-
-./client-service/app/routes:
-__pycache__
-analytics.py
-api.py
-expenses.py
-financials.py
-projects.py
-tasks.py
-timesheets.py
-users.py
-
-./client-service/app/routes/__pycache__:
-__init__.cpython-313.pyc
-analytics.cpython-313.pyc
-api.cpython-313.pyc
-expenses.cpython-313.pyc
-financials.cpython-313.pyc
-projects.cpython-313.pyc
-tasks.cpython-313.pyc
-timesheets.cpython-313.pyc
-users.cpython-313.pyc
-
-./client-service/app/schemas:
-__init__.py
-__pycache__
-analytics.py
-expense.py
-financial.py
-project.py
-task.py
-timesheet.py
-user.py
-
-./client-service/app/schemas/__pycache__:
-__init__.cpython-313.pyc
-analytics.cpython-313.pyc
-expense.cpython-313.pyc
-financial.cpython-313.pyc
-project.cpython-313.pyc
-task.cpython-313.pyc
-timesheet.cpython-313.pyc
-user.cpython-313.pyc
-
-./client-service/app/utils:
-__init__.py
-helpers.py
-
-./client-service/auth:
-Dockerfile
-app
-requirements.txt
-
-./client-service/auth/app:
-main.py
-
-./client-service/chat:
-Dockerfile
-app
-requirements.txt
-
-./client-service/chat/app:
-main.py
-
-./client-service/crm:
-Dockerfile
-app
-requirements.txt
-
-./client-service/crm/app:
-crm_mock.py
-
-./client-service/dashboard:
-requirements-dashboard.txt
-streamlit_app.py
-
-./client-service/instance:
-app.db
-dev.db
-
-./client-service/migrations:
-README
-__pycache__
-alembic.ini
-env.py
-script.py.mako
-versions
-
-./client-service/migrations/__pycache__:
-env.cpython-313.pyc
-
-./client-service/migrations/versions:
-234d6d9a30a5_initial_migration.py
-23d6ed34e355_добавлены_модели_expense_expenserequest_.py
-__pycache__
-aa8885109225_add_project_model.py
-d0c5a152bb78_add_user_and_task_models.py
-fc6ed2c6f3c6_init.py
-
-./client-service/migrations/versions/__pycache__:
-234d6d9a30a5_initial_migration.cpython-313.pyc
-23d6ed34e355_добавлены_модели_expense_expenserequest_.cpython-313.pyc
-aa8885109225_add_project_model.cpython-313.pyc
-d0c5a152bb78_add_user_and_task_models.cpython-313.pyc
-fc6ed2c6f3c6_init.cpython-313.pyc
-
-./client-service/producer:
-Dockerfile
-kafka_send.py
-kafka_test.py
-producer.py
-requirements.txt
-
-./client-service/shared:
-schemas
-
-./client-service/shared/schemas:
-agent.py
-call.py
-case.py
-contact.py
-interaction.py
-message.py
-
-./client-service/tests:
-__init__.py
-test_analytics.py
-test_financials.py
-test_projects.py
-test_timesheets.py
-
-./client-service/worker:
-Dockerfile
-__init__.py
-app
-requirements.txt
-static
-tests
-worker
-wsgi.py
-
-./client-service/worker/app:
-__init__.py
-main.py
-
-./client-service/worker/static:
-openapi.yaml
-
-./client-service/worker/tests:
-test_auth.py
-
-./client-service/worker/worker:
-Dockerfile
-app
-consumer.py
-requirements.txt
-schemas
-static
-tests
-worker.py
-
-./client-service/worker/worker/app:
-
-./client-service/worker/worker/schemas:
-
-./client-service/worker/worker/static:
-
-./client-service/worker/worker/tests:
-
-./client-service.wiki:
-API.md
-API_Reference.md
-Architecture.md
-Auth.md
-Home.md
-HowToDeploy.md
-Models.md
-Routes.md
-Setup.md
-Timesheets.md
-WebSocket.md
-
-./client-worker-legacy:
-client-worker.wiki
-client_service_api_doc.html
-generate_dashboard.py
-kafka_send.py
-requirements-dev.txt
-
-./infrastructure:
-README.md
-crm.log
-docker-compose.override.yml
-docker-compose.yml
-producer.log
-worker.log
-
-./services:
-crm
-producer
-worker
-
-./services/crm:
-Dockerfile
-app
-requirements.txt
-
-./services/crm/app:
-app
-crm_mock.py
-
-./services/crm/app/app:
-crm_mock.py
-
-./services/producer:
-Dockerfile
-producer.py
-requirements.txt
-
-./services/worker:
-Dockerfile
-app
-requirements.txt
-worker.py
-
-./services/worker/app:
-__init__.py
-__pycache__
-main.py
-
-./services/worker/app/__pycache__:
-__init__.cpython-313.pyc
-
-./shared:
-schemas
-
-./shared/schemas:
-__init__.py
-agent.py
-call.py
-case.py
-contact.py
-interaction.py
-message.py
+46 directories, 94 files

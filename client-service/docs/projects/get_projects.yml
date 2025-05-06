@@ -3,8 +3,10 @@ tags:
   - Project
 responses:
   200:
-    description: Успешный ответ
-    schema:
-      type: array
-      items:
-        $ref: '#/definitions/Project'
+    description: Список проектов получен
+    content:
+      application/json:
+        schema:
+          type: array
+          items:
+            $ref: '#/definitions/Project'

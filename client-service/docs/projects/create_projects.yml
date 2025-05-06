@@ -1,14 +1,16 @@
 summary: Создание нового проекта
 tags:
   - Project
-parameters:
-  - in: body
-    name: body
-    required: true
-    schema:
-      $ref: '#/definitions/ProjectCreate'
+requestBody:
+  required: true
+  content:
+    application/json:
+      schema:
+        $ref: '#/definitions/ProjectCreate'
 responses:
   201:
-    description: Проект создан
-    schema:
-      $ref: '#/definitions/Project'
+    description: Проект успешно создан
+    content:
+      application/json:
+        schema:
+          $ref: '#/definitions/Project'
