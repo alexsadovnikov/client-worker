@@ -1,3 +1,7 @@
+## CI/CD статус
+
+[![CI/CD для ClientService](https://github.com/alexsadovnikov/client-worker/actions/workflows/ci-cd.yml/badge.svg)](https://github.com/alexsadovnikov/client-worker/actions/workflows/ci-cd.yml)
+
 ![build](https://github.com/alexsadovnikov/client-worker/actions/workflows/worker-ci.yml/badge.svg)
 ![coverage](https://codecov.io/gh/alexsadovnikov/client-worker/branch/main/graph/badge.svg)
 ![lint](https://github.com/alexsadovnikov/client-worker/actions/workflows/lint.yml/badge.svg)
