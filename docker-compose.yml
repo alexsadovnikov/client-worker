@@ -4,37 +4,37 @@ services:
   # Сервис аутентификации (auth)
   auth:
     build:
-      context: ./client-service/auth
+      context: ./clientservice/auth
     container_name: auth
     ports:
       - "5051:5001"
     volumes:
-      - ./client-service/auth:/app
+      - ./clientservice/auth:/app
     environment:
       - PYTHONPATH=/app
 
   # Сервис чата (chat)
   chat:
     build:
-      context: ./client-service/chat
+      context: ./clientservice/chat
     container_name: chat
     ports:
       - "5052:5002"
     volumes:
-      - ./client-service/chat:/app
+      - ./clientservice/chat:/app
     environment:
       - PYTHONPATH=/app
 
   # Сервис обработки (worker)
   worker:
     build:
-      context: ./client-service/worker
+      context: ./clientservice/worker
     container_name: worker
     ports:
       - "5050:8000"
       - "5059:8000"
     volumes:
-      - ./client-service/worker:/app
+      - ./clientservice/worker:/app
       - ./shared/schemas:/app/shared/schemas
     depends_on:
       - kafka
@@ -62,25 +62,25 @@ services:
   # Моковая CRM
   crm:
     build:
-      context: ./client-service/crm
+      context: ./clientservice/crm
     container_name: crm
     ports:
       - "5053:5000"
     volumes:
-      - ./client-service/crm:/app
+      - ./clientservice/crm:/app
     environment:
       - PYTHONPATH=/app
 
   # API Gateway
   api_gateway:
     build:
-      context: ./client-service/api_gateway
+      context: ./clientservice/api_gateway
     container_name: api_gateway
     ports:
       - "8080:8080"
       - "8081:8081"
     volumes:
-      - ./client-service/api_gateway:/app
+      - ./clientservice/api_gateway:/app
     environment:
       - PYTHONPATH=/app
 
