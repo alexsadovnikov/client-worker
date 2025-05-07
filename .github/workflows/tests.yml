@@ -43,3 +43,11 @@ jobs:
           files: ./coverage.xml
           flags: unittests
           name: codecov-client-worker
+
+      - name: Проверка доступности Swagger UI
+        run: |
+          curl --fail http://localhost:5059/apidocs
+          curl --fail http://localhost:8081/apidocs
+          curl --fail http://localhost:8081/static/swagger-ui.html
+          curl --fail http://localhost:8080/time-entries/
+        
