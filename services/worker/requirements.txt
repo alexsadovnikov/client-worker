@@ -1,7 +1,0 @@
-flask
-kafka-python
-requests
-flasgger
-pydantic
-flask_jwt_extended
-email-validator

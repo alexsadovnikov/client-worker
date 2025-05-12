@@ -1,30 +1,40 @@
 components:
   schemas:
-    Call:
+    ErrorResponse:
       properties:
-        agent_id:
-          type: string
-        contact_id:
-          type: string
-        id:
+        error:
+          example: Некорректный формат запроса
           type: string
       type: object
-    Case:
+    LoginRequest:
       properties:
-        id:
+        password:
           type: string
+        username:
+          type: string
+      required:
+      - username
+      - password
+      type: object
+    LoginResponse:
+      properties:
+        access_token:
+          type: string
+      type: object
+    SendEventRequest:
+      properties:
+        client_id:
+          type: string
+        message:
+          type: string
+      required:
+      - client_id
+      - message
+      type: object
+    SendEventResponse:
+      properties:
         status:
-          type: string
-        title:
-          type: string
-      type: object
-    Client:
-      properties:
-        email:
-          type: string
-        id:
-          type: integer
-        name:
+          example: ok
           type: string
       type: object
   securitySchemes:
@@ -34,114 +44,43 @@ components:
       scheme: bearer
       type: http
 info:
-  description: Client worker API с поддержкой JWT-аутентификации, CRUD-операций и
-    интеграции с CRM/Kafka
+  description: Client worker API с поддержкой JWT-аутентификации, Kafka и интеграции
+    с CRM
   title: Client Worker API
   version: 1.0.0
 openapi: 3.0.3
 paths:
-  /clients:
+  /:
     get:
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                items:
-                  $ref: '#/components/schemas/Client'
-                type: array
-          description: Успешно
-      security:
-      - BearerAuth: []
-      summary: Получить список клиентов
-    post:
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Client'
-        required: true
-      responses:
-        '200':
-          description: Создан
-      security:
-      - BearerAuth: []
-      summary: Создать клиента
-  /clients/{id}:
-    delete:
-      parameters:
-      - in: path
-        name: id
-        required: true
-        schema:
-          type: string
-      responses:
-        '200':
-          description: Удалён
-      security:
-      - BearerAuth: []
-      summary: Удалить клиента
-    get:
-      parameters:
-      - in: path
-        name: id
-        required: true
-        schema:
-          type: string
-      responses:
-        '200':
-          description: Успешно
-      security:
-      - BearerAuth: []
-      summary: Получить клиента по ID
-    put:
-      parameters:
-      - in: path
-        name: id
-        required: true
-        schema:
-          type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Client'
-        required: true
-      responses:
-        '200':
-          description: Обновлён
-      security:
-      - BearerAuth: []
-      summary: Обновить клиента
-  /login:
-    post:
-      requestBody:
-        content:
-          application/json:
-            schema:
-              properties:
-                password:
-                  type: string
-                username:
-                  type: string
-              required:
-              - username
-              - password
-              type: object
-        required: true
       responses:
         '200':
           content:
             application/json:
               schema:
                 properties:
-                  access_token:
+                  message:
                     type: string
                 type: object
-          description: Токен выдан
+          description: Сервис работает
+      summary: Главная проверка сервиса
+  /login:
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+          description: JWT токен выдан
         '401':
           description: Неверные данные
-      summary: Логин
+      summary: Авторизация пользователя
   /protected:
     get:
       responses:
@@ -153,12 +92,42 @@ paths:
                   logged_in_as:
                     type: string
                 type: object
-          description: ОК
+          description: Авторизован
         '401':
           description: Неавторизован
       security:
       - BearerAuth: []
-      summary: Защищённый маршрут
+      summary: Проверка авторизованного пользователя
+  /send:
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SendEventRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SendEventResponse'
+          description: Событие отправлено
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Ошибка формата запроса
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Ошибка сервера или Kafka
+      security:
+      - BearerAuth: []
+      summary: Отправка события в Kafka
 security:
 - BearerAuth: []
 servers:

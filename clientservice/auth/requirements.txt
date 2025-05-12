@@ -1,4 +1,4 @@
 flask
-pyjwt
-flasgger
-requests
+flask-smorest
+flask-jwt-extended
+marshmallow

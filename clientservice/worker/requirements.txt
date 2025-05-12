@@ -1,9 +1,10 @@
 flask
-kafka-python
+flasgger
+pyyaml
+flask-swagger-ui
 requests
-pydantic
-flask_jwt_extended
+kafka-python
 email-validator
-flask-smorest
-apispec[marshmallow]
-marshmallow
+flask-jwt-extended
+flask-jwt-extended
+pydantic[email]

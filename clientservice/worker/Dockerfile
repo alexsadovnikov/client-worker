@@ -1,13 +1,13 @@
-FROM python:3.11-slim
-
+FROM python:3.10-slim
+ENV PYTHONPATH=/app/shared
 WORKDIR /app
 
-COPY requirements.txt ./
+# Сначала ставим зависимости
+COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY app/ ./app
-COPY shared/ ./shared/
+# Затем копируем весь код
+COPY . .
 
-ENV PYTHONPATH=/app:/app/shared
-
-CMD ["python", "app/main.py"]
+# И запускаем основной скрипт
+CMD ["python", "worker.py"]

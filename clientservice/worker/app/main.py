@@ -19,6 +19,7 @@ def create_app():
     app.config['OPENAPI_URL_PREFIX'] = '/'
     app.config['OPENAPI_SWAGGER_UI_PATH'] = '/apidocs'
     app.config['OPENAPI_SWAGGER_UI_URL'] = 'https://cdn.jsdelivr.net/npm/swagger-ui-dist/'
+    app.config['PROPAGATE_EXCEPTIONS'] = True  # ✅ важно для JWT ошибок
 
     api = Api(app)
     jwt = JWTManager(app)
@@ -52,16 +53,16 @@ def create_app():
             return jsonify(access_token=create_access_token(identity="admin"))
         return jsonify({"msg": "Bad credentials"}), 401
 
-    @auth_blp.route('/protected')
+    @auth_blp.route('/protected', methods=['GET'])
     @jwt_required()
     def protected():
         return jsonify(logged_in_as=get_jwt_identity())
 
-    api.register_blueprint(auth_blp)
+    api.register_blueprint(auth_blp, url_prefix="/auth")
 
     main_blp = Blueprint("main", "main", description="Основные маршруты")
 
-    @main_blp.route('/contacts')
+    @main_blp.route('/contacts', methods=['GET'])
     @main_blp.response(200, ContactSchema(many=True))
     def get_contacts():
         return [
@@ -69,7 +70,7 @@ def create_app():
             Contact(id=2, name="Мария", email="maria@example.com").dict()
         ]
 
-    @main_blp.route('/cases')
+    @main_blp.route('/cases', methods=['GET'])
     @main_blp.response(200, CaseSchema(many=True))
     def get_cases():
         return [
@@ -95,10 +96,10 @@ def create_app():
         except ValidationError as e:
             return jsonify({"error": e.errors()}), 400
 
-    @main_blp.route('/')
+    @main_blp.route('/', methods=['GET'])
     def index():
         return '🚀 ClientService API is running. Перейдите на /apidocs для Swagger UI.'
 
-    api.register_blueprint(main_blp)
+    api.register_blueprint(main_blp, url_prefix="/")
 
     return app
