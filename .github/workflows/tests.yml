@@ -30,7 +30,7 @@ jobs:
 
       - name: 🧪 Запуск тестов с покрытием
         run: |
-          PYTHONPATH=clientservice pytest \
+          PYTHONPATH=. pytest \
             --cov=clientservice.worker.app \
             --cov-report=term \
             --cov-report=xml \
