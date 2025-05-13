@@ -2,12 +2,15 @@ from flask import Flask, jsonify, request
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
 from flask_smorest import Api, Blueprint
 from marshmallow import Schema, fields
-from clientservice.worker.shared.schemas.contact import Contact
-from clientservice.worker.shared.schemas.case import Case
-from clientservice.worker.shared.schemas.agent import Agent
-from clientservice.worker.shared.schemas.call import Call
-from clientservice.worker.shared.schemas.interaction import Interaction
-from clientservice.worker.shared.schemas.message import MessageCreate as Message
+
+# ✅ Относительные импорты для Docker-среды:
+from shared.schemas.contact import Contact
+from shared.schemas.case import Case
+from shared.schemas.agent import Agent
+from shared.schemas.call import Call
+from shared.schemas.interaction import Interaction
+from shared.schemas.message import MessageCreate as Message
+
 from pydantic import ValidationError
 
 def create_app():
