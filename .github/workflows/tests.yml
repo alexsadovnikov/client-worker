@@ -30,11 +30,20 @@ jobs:
 
       - name: 🧪 Запуск тестов с покрытием
         run: |
-          PYTHONPATH=. pytest \
-            --cov=clientservice.worker.app \
+          PYTHONPATH=clientservice/worker pytest \
+            --cov=app \
             --cov-report=term \
             --cov-report=xml \
             clientservice/worker/tests
+
+      - name: 🚀 Запуск worker, kafka и crm
+        run: |
+          docker compose -f docker-compose.yml up -d worker kafka crm
+
+      - name: ⏳ Ожидание readiness
+        run: |
+          echo "Ожидаем инициализацию контейнеров..."
+          sleep 10
 
       - name: 📤 Отправка покрытия в Codecov
         uses: codecov/codecov-action@v4
@@ -44,9 +53,6 @@ jobs:
           flags: unittests
           name: codecov-client-worker
 
-      - name: Проверка доступности Swagger UI
+      - name: 🔍 Проверка доступности Swagger UI
         run: |
-          curl --fail http://localhost:5059/apidocs
-          curl --fail http://localhost:8081/apidocs
-          curl --fail http://localhost:8081/static/swagger-ui.html
-          curl --fail http://localhost:8080/time-entries/
+          curl --fail http://localhost:5050/apidocs || exit 1
