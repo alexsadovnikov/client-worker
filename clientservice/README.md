@@ -1,5 +1,5 @@
 [![CI/CD для ClientService](https://github.com/alexsadovnikov/client-worker/actions/workflows/ci-cd.yml/badge.svg)](https://github.com/alexsadovnikov/client-worker/actions/workflows/ci-cd.yml)
-
+[![Test Worker](https://github.com/alexsadovnikov/client-worker/actions/workflows/test-worker.yml/badge.svg)](https://github.com/alexsadovnikov/client-worker/actions/workflows/test-worker.yml)
 ![build](https://github.com/alexsadovnikov/client-worker/actions/workflows/worker-ci.yml/badge.svg)
 ![coverage](https://codecov.io/gh/alexsadovnikov/client-worker/branch/main/graph/badge.svg)
 ![lint](https://github.com/alexsadovnikov/client-worker/actions/workflows/lint.yml/badge.svg)
