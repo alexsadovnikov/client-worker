@@ -31,21 +31,25 @@ jobs:
       - name: 📥 Checkout repo
         uses: actions/checkout@v3
 
-      - name: ⚙️ Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: 3.10
+      - name: 🧰 Install tools
+        run: sudo apt-get update && sudo apt-get install -y jq curl
 
-      - name: 🧰 Install jq
-        run: sudo apt-get update && sudo apt-get install -y jq
-
-      - name: 🐳 Build Docker (worker only)
+      - name: 🐳 Build and start services
         run: |
           docker compose -f docker-compose.yml build worker
-          docker compose -f docker-compose.yml up -d worker kafka crm
+          docker compose -f docker-compose.yml up -d kafka crm worker
 
-      - name: ⏳ Wait for services to be ready
-        run: sleep 10
+      - name: ⏳ Wait for worker to become available
+        run: |
+          echo "⏳ Waiting for worker API to be ready..."
+          for i in {1..20}; do
+            curl -s http://localhost:5050/ || true
+            if curl -s http://localhost:5050 | grep -q "ClientService"; then
+              echo "✅ Worker is up!"
+              break
+            fi
+            sleep 5
+          done
 
       - name: ✅ Run test_worker.sh
         run: |
@@ -53,4 +57,5 @@ jobs:
           clientservice/worker/test_worker.sh
 
       - name: 🧹 Shutdown
+        if: always()
         run: docker compose -f docker-compose.yml down
