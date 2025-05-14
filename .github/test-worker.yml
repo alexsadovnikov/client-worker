@@ -56,6 +56,10 @@ jobs:
           chmod +x clientservice/worker/test_worker.sh
           clientservice/worker/test_worker.sh
 
+      - name: 🧪 Запуск тестов с покрытием
+        run: |
+          PYTHONPATH=clientservice:clientservice/worker pytest --cov=clientservice/worker --cov-report=xml
+
       - name: 🧹 Shutdown
         if: always()
         run: docker compose -f docker-compose.yml down
