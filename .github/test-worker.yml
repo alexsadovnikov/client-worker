@@ -58,8 +58,7 @@ jobs:
 
       - name: 🧪 Запуск тестов с покрытием
         run: |
-          export PYTHONPATH=$PWD/clientservice:$PWD/clientservice/worker
-          pytest clientservice/worker/tests --cov=clientservice/worker --cov-report=xml
+          PYTHONPATH=$PWD/clientservice:$PWD/clientservice/worker pytest clientservice/worker/tests --cov=clientservice/worker --cov-report=xml
 
       - name: 🧹 Shutdown
         if: always()
