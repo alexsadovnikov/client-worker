@@ -1,28 +1,41 @@
-name: CI/CD для ClientService
+name: 🧪 CI/CD для ClientService
 
 on:
   push:
-    branches:
-      - main
+    branches: [ main ]
   pull_request:
-    branches:
-      - main
+    branches: [ main ]
 
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
-      - name: 🛎️ Клонирование репозитория
-        uses: actions/checkout@v4
+      - name: 🧾 Checkout репозитория
+        uses: actions/checkout@v3
 
-      - name: 🛠 Сборка и запуск контейнеров
-        run: |
-          docker compose -f docker-compose.yml up -d --build
+      - name: 🐍 Установка Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
 
-      - name: 🔍 Проверка запущенных контейнеров
+      - name: 📦 Установка зависимостей
         run: |
-          docker compose -f docker-compose.yml ps
+          python -m pip install --upgrade pip
+          pip install -r clientservice/worker/requirements.txt
+          pip install -r clientservice/requirements-dev.txt
 
-      - name: 🔴 Остановка и удаление контейнеров
+      - name: 🧪 Прогон тестов с покрытием
         run: |
-          docker compose -f docker-compose.yml down
+          pytest --cov=clientservice/worker \
+                 --cov-report=term-missing \
+                 --cov-report=xml:clientservice/coverage.xml
+
+      - name: 📈 Отправка покрытия в Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          files: clientservice/coverage.xml
+          flags: worker
+          name: client-worker
+          # 🔐 Раскомментируй, если репозиторий private:
+          # token: ${{ secrets.CODECOV_TOKEN }}
