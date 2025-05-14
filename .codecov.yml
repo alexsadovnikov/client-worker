@@ -1,0 +1,23 @@
+codecov:
+  notify:
+    require_ci_to_pass: true
+
+coverage:
+  status:
+    project:
+      default:
+        # Общий уровень покрытия, ниже которого будет статус failed
+        target: 70%
+        threshold: 1%
+        flags:
+          - worker
+    patch:
+      default:
+        # Покрытие новых изменений (патчей) — желательно хотя бы 50%
+        target: 50%
+        threshold: 5%
+
+comment:
+  layout: "reach,diff,flags,files"
+  behavior: default
+  require_changes: true
