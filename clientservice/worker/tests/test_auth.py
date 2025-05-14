@@ -1,5 +1,5 @@
 import pytest
-from app.main import create_app  # Исправлено: путь относительный внутри worker
+from worker.app.main import create_app  # ✅ корректный абсолютный импорт
 
 @pytest.fixture
 def client():
