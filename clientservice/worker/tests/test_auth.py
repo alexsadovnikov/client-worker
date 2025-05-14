@@ -1,5 +1,5 @@
 import pytest
-from worker.app.main import create_app  # ✅ корректный абсолютный импорт
+from app.main import create_app  # ✅ исправлен импорт под PYTHONPATH
 
 @pytest.fixture
 def client():
