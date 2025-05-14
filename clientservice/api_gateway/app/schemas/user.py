@@ -6,12 +6,16 @@ class UserCreate(BaseModel):
     name: str = Field(..., example="John Doe")
     role: str = Field(..., example="admin")
 
-class UserOut(UserCreate):
+class UserUpdate(BaseModel):
+    email: Optional[EmailStr] = Field(None, example="user@example.com")
+    name: Optional[str] = Field(None, example="John Doe")
+    role: Optional[str] = Field(None, example="manager")
+
+class UserOut(BaseModel):
     id: int
+    email: EmailStr
+    name: str
+    role: str
 
     class Config:
         from_attributes = True
-class UserUpdate(BaseModel):
-    email: Optional[str] = Field(None, example="user@example.com")
-    full_name: Optional[str] = Field(None, example="John Doe")
-    role: Optional[str] = Field(None, example="manager")

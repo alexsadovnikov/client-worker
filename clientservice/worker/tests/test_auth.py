@@ -1,5 +1,5 @@
 import pytest
-from clientservice.worker.app.main import create_app
+from app.main import create_app  # Исправлено: путь относительный внутри worker
 
 @pytest.fixture
 def client():

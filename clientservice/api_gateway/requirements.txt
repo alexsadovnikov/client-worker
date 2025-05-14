@@ -37,3 +37,4 @@ marshmallow==3.21.1
 apispec==6.3.0
 pytest
 pytest-cov
+requests==2.31.0
