@@ -1,0 +1,9 @@
+version: '3.8'
+
+services:
+  worker:
+    volumes:
+      - ./shared/schemas:/app/shared/schemas
+    environment:
+      - FLASK_ENV=development
+      - PYTHONPATH=/app:/app/shared

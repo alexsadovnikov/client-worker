@@ -1,0 +1,4 @@
+Flask
+flask-smorest
+pytest
+pytest-cov

@@ -1,0 +1,142 @@
+/Users/alex/Documents/VM/ClientServiceDocs
+├── или
+├── любым
+├── открой
+├── #
+├── clientservice
+│   ├── __init__.py
+│   ├── __pycache__
+│   │   └── __init__.cpython-313.pyc
+│   ├── api_gateway
+│   │   ├── app
+│   │   ├── Dockerfile
+│   │   ├── requirements.txt
+│   │   ├── run_api_gateway.sh.save
+│   │   └── tests
+│   ├── app
+│   │   ├── __init__.py
+│   │   ├── extensions.py
+│   │   ├── models
+│   │   ├── routes
+│   │   ├── schemas
+│   │   ├── static
+│   │   └── utils
+│   ├── app.db
+│   ├── auth
+│   │   ├── app
+│   │   ├── Dockerfile
+│   │   └── requirements.txt
+│   ├── chat
+│   │   ├── app
+│   │   ├── Dockerfile
+│   │   ├── requirements.txt
+│   │   └── storage.json
+│   ├── config.py
+│   ├── coverage.xml
+│   ├── crm
+│   │   ├── app
+│   │   ├── Dockerfile
+│   │   ├── requirements.txt
+│   │   └── run_crm.sh
+│   ├── dashboard
+│   │   ├── requirements-dashboard.txt
+│   │   ├── run_dashboard.sh
+│   │   └── streamlit_app.py
+│   ├── Dockerfile
+│   ├── docs
+│   │   ├── analytics
+│   │   ├── financials
+│   │   ├── projects
+│   │   ├── tasks
+│   │   ├── timesheets
+│   │   └── users
+│   ├── generate_dashboard.py
+│   ├── generate_wiki_docs.py
+│   ├── instance
+│   │   ├── app.db
+│   │   └── dev.db
+│   ├── migrations
+│   │   ├── alembic.ini
+│   │   ├── env.py
+│   │   ├── README
+│   │   ├── script.py.mako
+│   │   └── versions
+│   ├── my_service
+│   │   ├── app
+│   │   ├── Dockerfile
+│   │   ├── requirements.txt
+│   │   └── tests
+│   ├── producer
+│   │   ├── Dockerfile
+│   │   ├── kafka_send.py
+│   │   ├── kafka_test.py
+│   │   ├── producer.py
+│   │   └── requirements.txt
+│   ├── README.md
+│   ├── requirements-dev.txt
+│   ├── run.py
+│   ├── tests
+│   │   ├── __init__.py
+│   │   ├── conftest.py
+│   │   ├── test_analytics.py
+│   │   ├── test_expenses.py
+│   │   ├── test_financials.py
+│   │   ├── test_projects.py
+│   │   ├── test_tasks.py
+│   │   ├── test_time_entries.py
+│   │   ├── test_timesheets.py
+│   │   └── test_users.py
+│   └── worker
+│       ├── __init__.py
+│       ├── app
+│       ├── consumer.py
+│       ├── Dockerfile
+│       ├── requirements.txt
+│       ├── run_worker.sh
+│       ├── shared
+│       ├── static
+│       ├── test_worker.sh
+│       ├── tests
+│       ├── worker.py
+│       └── wsgi.py
+├── docker-compose.dev.yml
+├── docker-compose.yml
+├── generate_openapi.sh
+├── infrastructure
+│   ├── crm.log
+│   ├── docker-compose.override.yml
+│   ├── docker-compose.yml
+│   ├── producer.log
+│   ├── README.md
+│   └── worker.log
+├── Makefile
+├── markdown-редактором
+├── migrations
+│   ├── alembic.ini
+│   ├── env.py
+│   ├── README
+│   ├── script.py.mako
+│   └── versions
+├── project_structure.txt
+├── requirements-dev.txt
+├── run_api_gateway.sh
+├── run_api_gateway.sh.save
+├── run_api_gateway.shччччЧx
+├── run_auth.sh
+├── run_chat.sh
+├── run_worker.py
+├── run_worker.sh
+├── shared
+│   └── schemas
+│       ├── __init__.py
+│       ├── __pycache__
+│       ├── agent.py
+│       ├── call.py
+│       ├── case.py
+│       ├── contact.py
+│       ├── interaction.py
+│       ├── message.py
+│       └── user.py
+└── structure.txt
+
+45 directories, 95 files

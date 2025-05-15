@@ -2,37 +2,14 @@ from flask import Blueprint, jsonify, request
 from flask_jwt_extended import create_access_token
 from shared.schemas.user import UserLogin
 from pydantic import ValidationError
-from flasgger import swag_from
+from flask_smorest import Blueprint as SmorestBlueprint
 
-auth_bp = Blueprint("auth", __name__)
+auth_bp = SmorestBlueprint("auth", __name__, url_prefix="/auth")
 
 @auth_bp.route("/login", methods=["POST"])
-@swag_from({
-    "summary": "Аутентификация",
-    "description": "Получение JWT токена",
-    "responses": {
-        200: {
-            "description": "Токен авторизации",
-            "examples": {
-                "application/json": {
-                    "access_token": "jwt-token"
-                }
-            }
-        },
-        400: {
-            "description": "Ошибка валидации"
-        }
-    }
-})
+@auth_bp.response(200, description="Успешная аутентификация")
 def login():
-    try:
-        data = request.get_json()
-        user = UserLogin(**data)
-    except ValidationError as e:
-        return jsonify({"error": e.errors()}), 400
-
-    # Простейшая мок-аутентификация (замени на свою логику)
-    if user.email == "admin@example.com" and user.password == "securepassword":
-        token = create_access_token(identity=user.email)
-        return jsonify(access_token=token)
-    return jsonify({"error": "Invalid credentials"}), 401
+    data = request.get_json()
+    user = UserLogin(**data)
+    access_token = create_access_token(identity=user.email)
+    return {"access_token": access_token}

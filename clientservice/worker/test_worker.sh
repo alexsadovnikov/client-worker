@@ -1,38 +1,81 @@
-#!/bin/bash
+---
+# 📦 .github/workflows/ci-cd.yml — CI/CD pipeline для инфраструктуры и контейнеров
+name: CI/CD для ClientService
 
-# === Аргументы с фолбэком ===
-SENDER_ID=${1:-"1"}
-RECIPIENT_ID=${2:-"2"}
-CONTENT=${3:-"Привет из test_worker.sh"}
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
 
-# === 1. Авторизация ===
-echo "🔐 Авторизация..."
-TOKEN=$(curl -s -X POST http://localhost:5050/auth/login \
-  -H "Content-Type: application/json" \
-  -d '{"username": "admin", "password": "admin"}' | jq -r '.access_token')
+jobs:
+  build:
+    runs-on: ubuntu-latest
 
-if [ "$TOKEN" = "null" ] || [ -z "$TOKEN" ]; then
-  echo "❌ Не удалось получить токен"
-  exit 1
-fi
+    steps:
+      - name: 🏠 Checkout репозитория
+        uses: actions/checkout@v4
 
-echo "✅ Токен получен"
-echo "ACCESS_TOKEN=$TOKEN" > .env
+      - name: ⚖️ Сборка и запуск контейнеров
+        run: docker compose -f docker-compose.yml up -d --build
 
-# === 2. Проверка защищённого маршрута ===
-echo "🔎 Проверка доступа..."
-curl -s -X GET http://localhost:5050/auth/protected \
-  -H "Authorization: Bearer $TOKEN"
-echo ""
+      - name: 🔍 Проверка запущенных сервисов
+        run: docker compose -f docker-compose.yml ps
 
-# === 3. Отправка сообщения ===
-echo "📤 Отправка сообщения в /messages/send..."
-curl -s -X POST http://localhost:5050/messages/send \
-  -H "Authorization: Bearer $TOKEN" \
-  -H "Content-Type: application/json" \
-  -d "{
-    \"sender_id\": \"$SENDER_ID\",
-    \"recipient_id\": \"$RECIPIENT_ID\",
-    \"content\": \"$CONTENT\"
-  }"
-echo ""
+      - name: 👀 Проверка доступности Swagger UI
+        run: |
+          curl --fail http://localhost:5050/apidocs
+          curl --fail http://localhost:5001/apidocs
+          curl --fail http://localhost:8080/apidocs
+
+      - name: ❌ Остановка сервисов
+        run: docker compose -f docker-compose.yml down
+
+---
+
+# 🔮 .github/workflows/tests.yml — Unit-тесты worker и Codecov
+name: 🧪 Тесты для worker
+
+on:
+  push:
+    paths:
+      - "clientservice/worker/**"
+      - ".github/workflows/tests.yml"
+  pull_request:
+    paths:
+      - "clientservice/worker/**"
+      - ".github/workflows/tests.yml"
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📄 Клонирование репозитория
+        uses: actions/checkout@v4
+
+      - name: 🐍 Установка Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: 📦 Установка зависимостей
+        run: |
+          pip install -r clientservice/worker/requirements.txt
+          pip install pytest pytest-cov
+
+      - name: 🔮 Запуск unit-тестов
+        run: |
+          PYTHONPATH=clientservice/worker pytest \
+            --cov=clientservice/worker/app \
+            --cov-report=term \
+            --cov-report=xml \
+            clientservice/worker/tests
+
+      - name: 📈 Отправка покрытия в Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: ./coverage.xml
+          flags: worker-tests
+          name: codecov-client-worker

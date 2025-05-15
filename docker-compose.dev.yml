@@ -1,48 +1,57 @@
 version: '3.8'
 
 services:
-  # Сервис аутентификации (auth)
   auth:
     build:
-      context: ./client-service/auth
+      context: ./clientservice/auth
     container_name: auth
     ports:
-      - "5051:5001"
+      - "${PORT_AUTH}:5001"
     volumes:
-      - ./client-service/auth:/app
+      - ./clientservice/auth:/app
     environment:
       - PYTHONPATH=/app
+    env_file:
+      - .env
+    restart: unless-stopped
 
-  # Сервис чата (chat)
   chat:
     build:
-      context: ./client-service/chat
+      context: ./clientservice/chat
     container_name: chat
     ports:
-      - "5052:5002"
+      - "${PORT_CHAT}:5002"
     volumes:
-      - ./client-service/chat:/app
+      - ./clientservice/chat:/app
     environment:
       - PYTHONPATH=/app
+    env_file:
+      - .env
+    restart: unless-stopped
 
-  # Сервис обработки (worker)
   worker:
     build:
-      context: ./client-service/worker
+      context: ./clientservice/worker
     container_name: worker
     ports:
-      - "5050:8000"
+      - "${PORT_WORKER}:8000"
       - "5059:8000"
     volumes:
-      - ./client-service/worker:/app
+      - ./clientservice/worker:/app
       - ./shared/schemas:/app/shared/schemas
     depends_on:
-      - kafka
-      - crm
+      db:
+        condition: service_healthy
+      kafka:
+        condition: service_started
+      crm:
+        condition: service_started
     environment:
       - PYTHONPATH=/app:/app/shared
+    env_file:
+      - .env
+    restart: unless-stopped
 
-  # Kafka брокер
   kafka:
     image: bitnami/kafka:latest
     container_name: kafka
@@ -58,39 +67,71 @@ services:
       - KAFKA_CFG_CONTROLLER_QUORUM_VOTERS=1@localhost:9093
       - KAFKA_CFG_CLUSTER_ID=V4XjsoY1QkOz9mmoDLjSRA
       - ALLOW_PLAINTEXT_LISTENER=yes
+    env_file:
+      - .env
+    restart: unless-stopped
 
-  # Моковая CRM
   crm:
     build:
-      context: ./client-service/crm
+      context: ./clientservice/crm
     container_name: crm
     ports:
-      - "5053:5000"
+      - "${PORT_CRM}:5000"
     volumes:
-      - ./client-service/crm:/app
+      - ./clientservice/crm:/app
     environment:
       - PYTHONPATH=/app
+    env_file:
+      - .env
+    restart: unless-stopped
 
-  # API Gateway
   api_gateway:
     build:
-      context: ./client-service/api_gateway
+      context: ./clientservice/api_gateway
     container_name: api_gateway
     ports:
-      - "8080:8080"
-      - "8081:8081"
+      - "${PORT_GATEWAY}:8080"
+      - "${PORT_GATEWAY_ALT}:8081"
     volumes:
-      - ./client-service/api_gateway:/app
+      - ./clientservice/api_gateway:/app
     environment:
       - PYTHONPATH=/app
+    env_file:
+      - .env
+    restart: unless-stopped
 
-  # PostgreSQL база
+  my_service:
+    build:
+      context: ./clientservice/my_service
+    container_name: my_service
+    ports:
+      - "${PORT_MY_SERVICE}:5004"
+    volumes:
+      - ./clientservice/my_service:/app
+    environment:
+      - PYTHONPATH=/app
+    env_file:
+      - .env
+    depends_on:
+      kafka:
+        condition: service_started
+    restart: unless-stopped
+
   db:
     image: postgres:16-alpine
     container_name: postgres_db
-    environment:
-      POSTGRES_USER: client_user
-      POSTGRES_PASSWORD: client_pass
-      POSTGRES_DB: client_service
     ports:
-      - "5432:5432"
+      - "${POSTGRES_PORT}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    env_file:
+      - .env
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
