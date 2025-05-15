@@ -99,6 +99,18 @@ def create_app():
         except ValidationError as e:
             return jsonify({"error": e.errors()}), 400
 
+    @main_blp.route('/send', methods=['POST'])
+    def send_event():
+        data = request.get_json()
+        return jsonify({"code": 200, "status": "Event received", "data": data})
+
+    @main_blp.route('/crm/contacts', methods=['GET'])
+    def get_mock_contacts():
+        return jsonify([
+            {"id": 1, "name": "Иван", "email": "ivan@example.com"},
+            {"id": 2, "name": "Мария", "email": "maria@example.com"}
+        ])
+
     @main_blp.route('/', methods=['GET'])
     def index():
         return '🚀 ClientService API is running. Перейдите на /apidocs для Swagger UI.'
