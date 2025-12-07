@@ -1,7 +1,0 @@
-flask
-flasgger
-pyyaml
-flask-swagger-ui
-requests
-kafka-python
-email-validator
